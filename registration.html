@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+
+        <script src="js/main.js"></script>
+        <script src="js/vanilla_tools.js"></script>
+
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/bootstrap-theme.css" rel="stylesheet">
+    </head>
+    <body>
+    <h2>Регистрация</h2>
+    <form class="form-horizontal" id="form" onsubmit="registration()">
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="login">Логин:</label>
+            <div class="col-xs-9">
+                <input type="text" class="form-control" id="login" placeholder="Введите логин" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="inputEmail">Email:</label>
+            <div class="col-xs-9">
+                <input type="email" class="form-control" id="inputEmail" placeholder="Email" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="inputPassword">Пароль:</label>
+            <div class="col-xs-9">
+                <input type="password" class="form-control" id="inputPassword" placeholder="Введите пароль" required>
+                <label>Введеные пароли не совпадают</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="confirmPassword">Подтвердите пароль:</label>
+            <div class="col-xs-9">
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Введите пароль ещё раз" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="firstName">Имя:</label>
+            <div class="col-xs-9">
+                <input type="text" class="form-control" id="firstName" placeholder="Введите имя" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="age">Возраст:</label>
+            <div class="col-xs-9">
+                <input type="number" class="form-control" id="age" placeholder="Введите свой возраст">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-offset-3 col-xs-9">
+                <input type="submit" class="btn btn-primary" value="Регистрация">
+                <input type="reset" class="btn btn-default" value="Очистить форму">
+            </div>
+        </div>
+    </form>
+    <div class="form-group">
+        <div class="col-xs-offset-3 col-xs-9">
+            <input type="button" class="btn btn-primary" value="Регистрация" onclick="registration()">
+            <input type="reset" class="btn btn-default" value="Очистить форму">
+        </div>
+    </div>
+    </body>
+</html>
