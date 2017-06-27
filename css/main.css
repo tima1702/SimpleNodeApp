@@ -10,6 +10,14 @@
     color: red;
     display: none;
 }
+.help-name{
+    color: red;
+    display: none;
+}
+.help-age{
+    color: red;
+    display: none;
+}
 .error{
     display: inline !important;
 }

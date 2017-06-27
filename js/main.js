@@ -73,7 +73,7 @@ function validateLogin() {
     removeAllError();
 
     var str = document.getElementById('login').value;
-    var parrent = /^[a-zA-z]{1}[a-zA-Z1-9]{3,20}/i;
+    var parrent = /^[a-zA-Z]{1}[a-zA-Z1-9]{3,20}/i;
     if(!parrent.test(str)) VT.addClass(".help-login",'error');
 
     if(document.getElementById('inputPassword').value.length < 5) VT.addClass('.help-password','error');
@@ -115,4 +115,37 @@ function userLogin(form){
     }
     alert("Вход выполнен!");
     form.reset();
+}
+
+function updateLocalFromSession(){
+
+    var session = sessionStorage;
+    var userInfo = localStorage.getItem(session.login);
+
+    userInfo = JSON.parse(userInfo);
+    //переписать
+    for(var key in userInfo)
+        for(var key1 in session)
+            if(key1 == key) userInfo[key] = session[key];
+
+    userInfo = JSON.stringify(userInfo);
+
+    localStorage.setItem(session.login,userInfo);
+}
+
+
+function changeName(){
+
+    VT.removeClass('.help-name','error');
+
+    var name = document.getElementById('firstName').value;
+    var parrent = /[a-zA-Zа-яА-Я]{3,25}/;
+
+    if(!parrent.test(name)){
+        VT.addClass('.help-name','error');
+        return false;
+    };
+
+    sessionStorage.setItem('name',name);
+    updateLocalFromSession();
 }
