@@ -38,3 +38,7 @@
 .error-room{
     border-color: red;
 }
+
+.hide{
+    display: none;
+}

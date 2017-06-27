@@ -1,0 +1,26 @@
+<div class="col-md-6">
+    <h2>Вход в систему</h2>
+    <div class="form-horizontal" id="form-login">
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="login">Логин:</label>
+            <div class="col-xs-9">
+                <input type="text" class="form-control" id="login" placeholder="Введите логин" required>
+                <label class="help-login ">Не верный логин!</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="inputPassword">Пароль:</label>
+            <div class="col-xs-9">
+                <input type="password" class="form-control" id="inputPassword" placeholder="Введите пароль" required>
+                <label class="help-password ">Введен не корректный пароль!</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-offset-3 col-xs-9">
+                <input type="button" class="btn btn-primary" value="Вход" onclick="userLogin()">
+                <input type="reset" class="btn btn-default" value="Очистить форму">
+            </div>
+        </div>
+        </form>
+    </div>
+</div>

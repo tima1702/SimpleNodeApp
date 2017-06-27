@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-md-4">
+        <label>Дома:</label>
+        <select id="task5" onchange="task5_2()" class="form-control">
+        </select>
+        <br>
+        <label>Изменить название:</label>
+        <br>
+        <input type="text" id="homeName">
+        <button onclick="task5_3()" class="btn btn-default">Обновить</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <label>Комнаты</label>
+        <select id="rooms" onchange="onRoomChange()" class="form-control">
+        </select>
+        <br>
+        <label>Изменить название:</label>
+        <br>
+        <input type="text" id="roomName">
+        <button onclick="changeRoomName()" class="btn btn-default">Обновить</button>
+    </div>
+</div>
+<script>
+    task5_1();
+    task5_2();
+    onRoomChange();
+</script>

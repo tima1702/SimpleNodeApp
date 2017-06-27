@@ -193,7 +193,7 @@ var VT = (function () {
     }
 
     function showEl(query) {
-        return removeClass(query, "hidden")
+        return removeClass(query, "hidden");
     }
 
     function updateEl(el, html) {
@@ -246,14 +246,7 @@ var VT = (function () {
         params = params ? JSON.stringify(params) : null;
         method = method.toUpperCase();
 
-        if(method == "GET" && params)
-            if(url.indexOf('?') >-1)
-                url += "&" + obj_to_query_str(params);
-            else
-                url += '?' + obj_to_query_str(params);
-
         var xhr = new XMLHttpRequest();
-
 
         xhr.open(method, url, true);
         xhr.setRequestHeader('Accept', 'application/json, text/plain, */*');
