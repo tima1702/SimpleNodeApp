@@ -1,0 +1,15 @@
+.help-email{
+    color: red;
+    display: none;
+}
+.help-login{
+    color: red;
+    display: none;
+}
+.help-password{
+    color: red;
+    display: none;
+}
+.error{
+    display: inline !important;
+}
