@@ -97,6 +97,7 @@ function loadUserInfo(){
         content.innerHTML +=p;
     });
 
+    window.setTimeout(setUserData,100);
 }
 
 function hideErr(query){

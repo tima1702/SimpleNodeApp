@@ -14,6 +14,67 @@ function updateLocalFromSession(){
     localStorage.setItem(session.login,userInfo);
 }
 
+function getInfoObj(){
+    var object = new Object();
+
+    object.email = document.getElementById('inputEmail').value;
+    object.age = document.getElementById('age').value;
+    object.name = document.getElementById('firstName').value;
+
+    return object;
+}
+
+function validInfo(object){
+    removeAllError();
+
+    var str = object.email;
+    var parrent = /[0-9a-z_]+@[0-9a-z_]+\.[a-z]{2,5}/i;
+    if(!parrent.test(str)) VT.addClass('.help-email','error');
+
+    str = object;
+    parrent = parrent = /[a-zA-Zа-яА-Я]{3,25}/;
+    if((!parrent.test(str)) & (str != "")) VT.addClass('.help-name','error');
+
+    if(document.getElementById('age').value != "") {
+        var age = object.age;
+        age = Number(age);
+        if (age < 1 || age > 120) VT.addClass('.help-age', 'error');
+    }
+
+    if(VT.getAllEl('.error').length == 0) return true;
+    return false;
+}
+function updateSession(object){
+    for(key in object)
+        sessionStorage.setItem(key,object[key]);
+}
+
+function changeAll(){
+    var object = getInfoObj();
+
+
+    if(!validInfo(object)) return false;
+
+    updateSession(object);
+    updateLocalFromSession();
+    setUserData();
+    alert("Данные обновлены");
+}
+
+function setUserData(){
+    var session = sessionStorage;
+
+    if(session.age != 0){
+        document.getElementById('age').value = session.age;
+    }
+
+    document.getElementById('inputEmail').value = session.email;
+
+    document.getElementById('firstName').value = session.name;
+
+}
+
+
 function changeName(){
     VT.removeClass('.help-name','error');
 

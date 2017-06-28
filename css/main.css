@@ -39,6 +39,7 @@
 .top-menu li a{
     color: white;
     font-size: large;
+    cursor: pointer;
 }
 
 .error-room{
