@@ -460,7 +460,7 @@ function task5_3(){
     VT.removeClass('#homeName','error-room');
 
     home[id].homeName = document.getElementById('homeName').value;
-    console.log(home[id].homeName);
+   
 
     document.getElementById('task5').innerHTML = "";
     task5_1();
@@ -478,7 +478,7 @@ function validHomeName(){
 
 function getSelectOptions(select) {
     var result = -1;
-    console.log(select);
+
     for (var i = 0; i < select.options.length; i++) {
         var option = select.options[i];
         if (option.selected) {
@@ -508,7 +508,7 @@ function getHomeNames() {
     var homeNames = home.map(function(item){
         return item.homeName;
     });
-    console.log(homeNames);
+
     return homeNames;
 }
 
@@ -521,7 +521,7 @@ function getRoomName(){
     var roomNames = rooms.map(function (item) {
         return item.roomName;
     });
-    //console.log(roomNames);
+
     return roomNames;
 }
 

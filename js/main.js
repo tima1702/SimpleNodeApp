@@ -21,6 +21,13 @@ function removeAllError(){
 }
 
 function loadLogin(){
+
+    if(sessionStorage.getItem('isLogin')){
+        loadUserInfo();
+        return;
+    }
+
+
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";
@@ -30,6 +37,12 @@ function loadLogin(){
 }
 
 function loadRegistration(){
+
+    if(sessionStorage.getItem('isLogin')){
+        loadUserInfo();
+        return;
+    }
+
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";
@@ -39,31 +52,55 @@ function loadRegistration(){
 }
 
 function loadHome(){
+
+    if(!sessionStorage.getItem('isLogin')){
+        loadLogin();
+        return;
+    }
     navigation();
-    var content = document.getElementById('content');
-    content.innerHTML = "";
+
     VT.send('GET','/test2/template/home.html',[],'',function (p) {
-        content.innerHTML +=p;
+        document.getElementById('content').innerHTML = "";
+        document.getElementById('content').innerHTML +=p;
     });
-    //alert("123");
+
+    document.getElementById('content')
+
+    return true;
+
 }
 
 function loadHomes() {
     loadHome();
+
+    window.setTimeout(loadTask,100);
 }
 
+function loadTask() {
+
+    task5_1();
+    task5_2();
+
+}
 
 function loadUserInfo(){
+
+    if(!sessionStorage.getItem('isLogin')){
+        loadLogin();
+        return;
+    }
+
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";
     VT.send('GET','/test2/template/userInfo.html',[],'',function (p) {
         content.innerHTML +=p;
     });
+
 }
 
 function navigation(){
-    console.log(sessionStorage.getItem('isLogin'));
+
     if(sessionStorage.getItem('isLogin')){
         VT.addClass('#nav-reg','hide');
         VT.addClass('#nav-log','hide');
@@ -73,11 +110,14 @@ function navigation(){
         VT.removeClass('#nav-reg','hide');
         VT.removeClass('#nav-log','hide');
         VT.addClass('#nav-inf','hide');
-        VT.addClass('#nav-home','hidden');
+        VT.addClass('#nav-home','hide');
     }
 }
+
 if(sessionStorage.getItem('isLogin')){
     loadUserInfo();
+
 } else{
     loadLogin();
 }
+
