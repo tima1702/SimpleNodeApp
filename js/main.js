@@ -31,7 +31,7 @@ function loadLogin(){
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";
-    VT.send('GET','/test2/template/login.html',[],'',function (p) {
+    VT.send('GET','/template/login.html',[],'',function (p) {
         content.innerHTML +=p;
     });
 }
@@ -46,7 +46,7 @@ function loadRegistration(){
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";
-    VT.send('GET','/test2/template/registration.html',[],'',function (p) {
+    VT.send('GET','/template/registration.html',[],'',function (p) {
         content.innerHTML +=p;
     });
 }
@@ -59,7 +59,7 @@ function loadHome(){
     }
     navigation();
 
-    VT.send('GET','/test2/template/home.html',[],'',function (p) {
+    VT.send('GET','/template/home.html',[],'',function (p) {
         document.getElementById('content').innerHTML = "";
         document.getElementById('content').innerHTML +=p;
     });
@@ -93,7 +93,7 @@ function loadUserInfo(){
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";
-    VT.send('GET','/test2/template/userInfo.html',[],'',function (p) {
+    VT.send('GET','/template/userInfo.html',[],'',function (p) {
         content.innerHTML +=p;
     });
 

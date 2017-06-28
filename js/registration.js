@@ -9,7 +9,11 @@ function registration(form){
         return false;
     }
     localStorage.setItem(obj.login,serialObj);
-
+    VT.send('POST','/register',[serialObj], function (e) {
+        console.log(e);
+    },function (p) {
+        console.log(p);
+    });
     form.reset();
     alert("Вы зарегистрированны в системе!");
     loadLogin();
