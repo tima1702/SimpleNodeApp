@@ -1,29 +1,30 @@
 .help-email{
     color: red;
-    display: none;
+    visibility:hidden;
 }
 .help-login{
     color: red;
-    display: none;
+    visibility:hidden;
 }
 .help-password{
     color: red;
-    display: none;
+    visibility:hidden;
 }
 .help-name{
     color: red;
-    display: none;
+    visibility:hidden;
 }
 .help-age{
     color: red;
-    display: none;
+    visibility:hidden;
 }
 .error{
-    display: inline !important;
+    visibility:visible !important;
 }
 
 .top-menu{
-    background:#daf2fe;
+    background: #337ab7;
+    height: 50px;
 }
 .top-menu ul{
     padding-left:0;
@@ -33,6 +34,11 @@
     display:inline-block;
     margin-left:10px;
     padding:3px 10px;
+    padding-top: 10px;
+}
+.top-menu li a{
+    color: white;
+    font-size: large;
 }
 
 .error-room{
@@ -41,4 +47,34 @@
 
 .hide{
     display: none;
+}
+
+h2{
+    padding-bottom: 10px;
+}
+
+p{
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.row{
+    padding-bottom: 5px;
+}
+
+.center{
+    text-align: center;
+}
+
+.home-page label{
+    font-size: medium !important;
+}
+.home-page input{
+    margin-bottom: 10px;
+}
+
+.registration .form-group{
+    margin-bottom: 0 !important;
+}
+.second-password{
+    margin-bottom: 25px;
 }

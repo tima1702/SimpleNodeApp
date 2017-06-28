@@ -460,7 +460,7 @@ function task5_3(){
     VT.removeClass('#homeName','error-room');
 
     home[id].homeName = document.getElementById('homeName').value;
-   
+
 
     document.getElementById('task5').innerHTML = "";
     task5_1();

@@ -8,16 +8,18 @@
     <link href="css/main.css" rel="stylesheet">
 </head>
 <body>
-<div class="col-md-12 top-menu">
+<div class="container">
+<div class="col-md-12 top-menu center">
     <ul>
         <li><a onclick="loadRegistration()" id="nav-reg">Регистриция</a></li>
         <li><a onclick="loadLogin()" id="nav-log">Вход</a></li>
         <li><a onclick="loadUserInfo()" id="nav-inf">Редактирование данных</a></li>
         <li><a onclick="loadHomes()" id="nav-home">Дома и комнаты</a></li>
+        <li><a onclick="logOut()" id="nav-out">Выход</a></li>
     </ul>
 </div>
     <div id="content"></div>
-
+</div>
 <script src="js/vanilla_tools.js"></script>
 <script src="js/registration.js"></script>
 <script src="js/home.js"></script>

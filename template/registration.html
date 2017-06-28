@@ -1,4 +1,4 @@
-<div class="col-md-6">
+<div class="col-md-6 col-md-offset-3 registration">
     <h2>Регистрация</h2>
     <form class="form-horizontal" id="form">
         <div class="form-group">
@@ -24,20 +24,22 @@
         </div>
         <div class="form-group">
             <label class="control-label col-xs-3" for="confirmPassword">Подтвердите пароль:</label>
-            <div class="col-xs-9">
+            <div class="col-xs-9 second-password">
                 <input type="password" class="form-control" id="confirmPassword" placeholder="Введите пароль ещё раз" required>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-xs-3" for="firstName">Имя:</label>
             <div class="col-xs-9">
-                <input type="text" class="form-control" id="firstName" placeholder="Введите имя" >
+                <input type="text" class="form-control" id="firstName" placeholder="Введите имя">
+                <label class="help-name">Не корректное имя</label>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-xs-3" for="age">Возраст:</label>
             <div class="col-xs-9">
                 <input type="number" class="form-control" id="age" placeholder="Введите свой возраст">
+                <label class="help-age">Не корректный возраст</label>
             </div>
         </div>
         <div class="form-group">

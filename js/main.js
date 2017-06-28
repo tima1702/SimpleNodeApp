@@ -106,12 +106,18 @@ function navigation(){
         VT.addClass('#nav-log','hide');
         VT.removeClass('#nav-inf','hide');
         VT.removeClass('#nav-home','hide');
+        VT.removeClass('#nav-out','hide');
     } else{
         VT.removeClass('#nav-reg','hide');
         VT.removeClass('#nav-log','hide');
         VT.addClass('#nav-inf','hide');
         VT.addClass('#nav-home','hide');
+        VT.addClass('#nav-out','hide');
     }
+}
+function logOut() {
+    sessionStorage.clear();
+    loadLogin();
 }
 
 if(sessionStorage.getItem('isLogin')){
