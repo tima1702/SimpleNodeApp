@@ -4,21 +4,21 @@
         <div class="form-group">
             <label class="control-label col-xs-3" for="login">Логин:</label>
             <div class="col-xs-9">
-                <input type="text" class="form-control" id="login" placeholder="Введите логин" required>
+                <input type="text" class="form-control" id="login" placeholder="Введите логин" oninput="hideErr('.help-login')">
                 <label class="help-login ">Не верный логин!</label>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-xs-3" for="inputEmail">Email:</label>
             <div class="col-xs-9">
-                <input type="email" class="form-control" id="inputEmail" placeholder="Email" required>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Email" oninput="hideErr('.help-email')">
                 <label class="help-email ">Не корректный email!</label>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-xs-3" for="inputPassword">Пароль:</label>
             <div class="col-xs-9">
-                <input type="password" class="form-control" id="inputPassword" placeholder="Введите пароль" required>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Введите пароль" oninput="hideErr('.help-password')">
                 <label class="help-password ">Введен не корректный пароль!</label>
             </div>
         </div>
@@ -31,14 +31,14 @@
         <div class="form-group">
             <label class="control-label col-xs-3" for="firstName">Имя:</label>
             <div class="col-xs-9">
-                <input type="text" class="form-control" id="firstName" placeholder="Введите имя">
+                <input type="text" class="form-control" id="firstName" placeholder="Введите имя" oninput="hideErr('.help-name')">
                 <label class="help-name">Не корректное имя</label>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-xs-3" for="age">Возраст:</label>
             <div class="col-xs-9">
-                <input type="number" class="form-control" id="age" placeholder="Введите свой возраст">
+                <input type="number" class="form-control" id="age" placeholder="Введите свой возраст" oninput="hideErr('.help-age')">
                 <label class="help-age">Не корректный возраст</label>
             </div>
         </div>

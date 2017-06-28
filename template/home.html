@@ -7,8 +7,8 @@
             <br>
             <label>Изменить название:</label>
             <br>
-            <input type="text" id="homeName" class="form-control">
-            <button onclick="task5_3()" class="btn btn-default">Обновить</button>
+            <input type="text" id="homeName" class="form-control" oninput="removeErrorRoom('#homeName')">
+            <button onclick="task5_3()" class="btn btn-default col-md-3">Обновить</button>
 
     </div>
     <div class="row">
@@ -19,7 +19,7 @@
             <label>Изменить название:</label>
             <br>
 
-            <input type="text" id="roomName" class="form-control col-md-3">
+            <input type="text" id="roomName" class="form-control col-md-3" oninput="removeErrorRoom('#roomName')">
             <button onclick="changeRoomName()" class="btn btn-default col-md-3">Обновить</button>
 
     </div>

@@ -40,8 +40,18 @@ function validateRegistration(){
     parrent = /[0-9a-z_]+@[0-9a-z_]+\.[a-z]{2,5}/i;
     if(!parrent.test(str)) VT.addClass('.help-email','error');
 
+    str = document.getElementById('firstName').value;
+    parrent = parrent = /[a-zA-Zа-яА-Я]{3,25}/;
+    if((!parrent.test(str)) & (str != "")) VT.addClass('.help-name','error');
+
     if((document.getElementById('inputPassword').value != document.getElementById('confirmPassword').value) ||
         (document.getElementById('inputPassword').value.length < 5)) VT.addClass('.help-password','error');
+
+    if(document.getElementById('age').value != "") {
+        var age = document.getElementById('age').value;
+        age = Number(age);
+        if (age < 1 || age > 120) VT.addClass('.help-age', 'error');
+    }
 
     if(VT.getAllEl('.error').length == 0) return true;
     return false;

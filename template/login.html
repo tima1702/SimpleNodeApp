@@ -4,14 +4,14 @@
         <div class="form-group">
             <label class="control-label col-xs-3" for="login">Логин:</label>
             <div class="col-xs-9">
-                <input type="text" class="form-control" id="login" placeholder="Введите логин" required>
+                    <input type="text" class="form-control" id="login" placeholder="Введите логин" oninput="hideErr('.help-login')" required>
                 <label class="help-login ">Не верный логин!</label>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-xs-3" for="inputPassword">Пароль:</label>
             <div class="col-xs-9">
-                <input type="password" class="form-control" id="inputPassword" placeholder="Введите пароль" required>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Введите пароль" oninput="hideErr('.help-password')"required>
                 <label class="help-password ">Введен не корректный пароль!</label>
             </div>
         </div>

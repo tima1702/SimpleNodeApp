@@ -99,6 +99,10 @@ function loadUserInfo(){
 
 }
 
+function hideErr(query){
+    VT.removeClass(query, "error");
+}
+
 function navigation(){
 
     if(sessionStorage.getItem('isLogin')){

@@ -461,11 +461,14 @@ function task5_3(){
 
     home[id].homeName = document.getElementById('homeName').value;
 
-
     document.getElementById('task5').innerHTML = "";
     task5_1();
     task5_2();
     roomSelector();
+}
+
+function removeErrorRoom(query){
+    VT.removeClass(query, "error-room");
 }
 
 function validHomeName(){
