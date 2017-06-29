@@ -15,38 +15,46 @@ var mongoose = require("mongoose");
 
 mongoose.connect('mongodb://localhost/test');
 
-var TestUser = new User({
-    name: "Test",
-    email: "Test",
-    password: "Test",
-    age: "32",
-    login: "Test"
-});
-
-/*TestUser.save(function(err) {
-    if (err) throw err;
-
-    console.log('User saved successfully!');
-});
-*/
 app.use(express.static(__dirname + "/"));
 
 // определяем обработчик для маршрута "/"
 app.get("/", function(request, response){
 });
 
+
 app.post("/register", function (request, response) {
-    console.log("Запрос дошел");
     if(!request.body) {
-        console.log("Запрос дошел");
         return response.sendStatus(400);
     }
     var json = request.body;
     json = JSON.parse(json);
 
-    console.log(json);
-    response.send('123');
+    User.find({login: json.login}, function (err,user) {
+        if (err) {
+            console.log(err);
+            response.send("2");
+            return;
+        }
+        console.log(user.length);
+        if(user.length == 0){
+            var newUser = new User(json);
+
+            newUser.save(function (error) {
+                if(error){
+                    console.log(error);
+                    response.send("2");
+                    return;
+                }
+                response.send("1");
+            })
+        } else {
+            console.log('123');
+            response.send("2");}
+    });
+
 });
+
+
 
 
 

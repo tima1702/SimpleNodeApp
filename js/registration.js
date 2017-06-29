@@ -4,19 +4,23 @@ function registration(form){
     var obj=getObjectRegistration();
     var serialObj =JSON.stringify(obj);
     //console.log(serialObj);
-    if(!(localStorage.getItem(obj.login) == null || localStorage.getItem(obj.login) == undefined)) {
+    /*if(!(localStorage.getItem(obj.login) == null || localStorage.getItem(obj.login) == undefined)) {
         alert("Пользователь с таким логином зарегистрировался в системе");
         return false;
-    }
-    localStorage.setItem(obj.login,serialObj);
+    }*/
+    //localStorage.setItem(obj.login,serialObj);
     VT.send('POST','/register',[serialObj], function (e) {
         console.log(e);
     },function (p) {
-        console.log(p);
+        //console.log(p);
+        if(p == "1") {
+            alert("Вы зарегистрированны в системе!");
+            loadLogin();
+        } else alert("Пользователь с таким логином зарегистрировался в системе");
     });
     form.reset();
-    alert("Вы зарегистрированны в системе!");
-    loadLogin();
+    //alert("Вы зарегистрированны в системе!");
+    //loadLogin();
 }
 
 function getObjectRegistration(){
