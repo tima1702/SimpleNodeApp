@@ -62,13 +62,16 @@ function changeAll(){
         console.log(e);
     },function (p) {
         console.log(p);
+        if(p.numer == "-1"){
+            sessionStorage.clear();
+            loadLogin();
+            return;
+        }
         var userInfo = p[0];
         sessionStorage.setItem("isLogin",true);
-        for(var key in userInfo){
-            if(key != "password") sessionStorage.setItem(key,userInfo[key]);
-        }
+        for(var key in userInfo)
+             sessionStorage.setItem(key,userInfo[key]);
     });
-
     //updateLocalFromSession();
     setUserData();
     alert("Данные обновлены");

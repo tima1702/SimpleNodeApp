@@ -39,11 +39,9 @@ function userLogin(){
             alert("Пользователь с  таким логином или паролем не зарегистрирован!");
             return false;
         }
-        var userInfo = p[0];
+        var userInfo = p;
         sessionStorage.setItem("isLogin",true);
-        for(var key in userInfo){
-            if(key != "password") sessionStorage.setItem(key,userInfo[key]);
-        }
+        for(var key in userInfo) sessionStorage.setItem(key,userInfo[key]);
         console.log(userInfo);
         //alert("Вход выполнен!");
         loadUserInfo();

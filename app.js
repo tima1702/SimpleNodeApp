@@ -9,11 +9,23 @@ var jsonParser = bodyParser.json();
 
 var User = require("./modules/user");
 
+var jwt = require('jsonwebtoken');
+
+
 app.use(bodyParser.json());
 
 var mongoose = require("mongoose");
 
-mongoose.connect('mongodb://localhost/test');
+//mongoose.connect('mongodb://localhost/test');
+
+var impObject = {
+    'jwtSecret': 'xtyqwtzt00700tytx',
+    'connStr': 'mongodb://localhost/test'
+};
+
+mongoose.connect(impObject.connStr);
+
+app.set('jwtSecret', impObject.jwtSecret);
 
 app.use(express.static(__dirname + "/"));
 
@@ -61,12 +73,23 @@ app.post("/login", function(request,reponse){
     var json = request.body;
     json = JSON.parse(json);
 
-    User.find({login: json.login, password: json.password},function (err,user){
+    User.find({login: json.login, password: json.password},function (err,users){
         if(err) {
             reponse.send();
             throw err;
         }
-        reponse.send(JSON.stringify(user));
+        var user = users[0];
+        var accessToken = jwt.sign({login: user.login}, app.get('jwtSecret'), {
+            expiresIn: 60
+        });
+        console.log(user);
+
+        reponse.send({
+            'accessToken': accessToken,
+            'name': user.name,
+            'age': user.age,
+            'email':user.email
+        });
     });
 });
 
@@ -77,20 +100,30 @@ app.post("/updateUserInfo", function(request,reponse){
     var json = request.body;
     json = JSON.parse(json);
     console.log(json);
-    User.findOneAndUpdate({"_id": json._id},{"$set":{"name":json.name,"age":json.age,"email":json.email}}).exec(function(err, user){
+    var token = json.accessToken;
+    var decoded = jwt.decode(token);
+    console.log(decoded);
+    if(decoded == null){return reponse.send({
+        numer:"-1",
+        description: "false login"
+    })}
+    User.findOneAndUpdate({"login": decoded.login},{"$set":{"name":json.name,"age":json.age,"email":json.email}}).exec(function(err, user){
         if(err) {
             console.log(err);
             return response.sendStatus(400);
-        } else {
-            console.log(user);
         }
     });
-    User.find({login: json.login},function (err,user){
+    User.find({login: decoded.login},function (err,users){
         if(err) {
             reponse.send();
             throw err;
         }
-        reponse.send(JSON.stringify(user));
+        var user = users[0];
+        reponse.send({
+            'name': user.name,
+            'age': user.age,
+            'email':user.email
+        });
     });
 });
 
