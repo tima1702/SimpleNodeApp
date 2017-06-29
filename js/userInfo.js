@@ -31,7 +31,7 @@ function validInfo(object){
     var parrent = /[0-9a-z_]+@[0-9a-z_]+\.[a-z]{2,5}/i;
     if(!parrent.test(str)) VT.addClass('.help-email','error');
 
-    str = object;
+    str = object.name;
     parrent = parrent = /[a-zA-Zа-яА-Я]{3,25}/;
     if((!parrent.test(str)) & (str != "")) VT.addClass('.help-name','error');
 
@@ -52,11 +52,24 @@ function updateSession(object){
 function changeAll(){
     var object = getInfoObj();
 
-
     if(!validInfo(object)) return false;
 
     updateSession(object);
-    updateLocalFromSession();
+
+    object = JSON.stringify(sessionStorage);
+
+    VT.send('POST','/updateUserInfo',[object], function (e) {
+        console.log(e);
+    },function (p) {
+        console.log(p);
+        var userInfo = p[0];
+        sessionStorage.setItem("isLogin",true);
+        for(var key in userInfo){
+            if(key != "password") sessionStorage.setItem(key,userInfo[key]);
+        }
+    });
+
+    //updateLocalFromSession();
     setUserData();
     alert("Данные обновлены");
 }
@@ -64,14 +77,12 @@ function changeAll(){
 function setUserData(){
     var session = sessionStorage;
 
-    if(session.age != 0){
-        document.getElementById('age').value = session.age;
-    }
+    document.getElementById('age').value = session.age;
+
 
     document.getElementById('inputEmail').value = session.email;
 
     document.getElementById('firstName').value = session.name;
-
 }
 
 
@@ -142,16 +153,23 @@ function changePassword(){
     var password = document.getElementById('inputPassword').value;
     password = password.hashCode();
 
-    var login = sessionStorage.getItem('login');
-    var userInfo = localStorage.getItem(login);
+    var object = {
+        login: sessionStorage.getItem('login'),
+        password: password
+    };
 
-    userInfo = JSON.parse(userInfo);
-    userInfo.password = password;
-    userInfo = JSON.stringify(userInfo);
+    object = JSON.stringify(object);
+    console.log(object);
 
-    localStorage.setItem(login,userInfo);
-
-    document.getElementById('inputPassword').value = "";
-    document.getElementById('confirmPassword').value ="";
-    alert("Пароль изменнен");
+    VT.send('POST','/updatePassword',[object],function (e) {
+        console.log(e);
+    },function (p) {
+        if(p != true){
+            alert("Ошибка");
+            return;
+        };
+        document.getElementById('inputPassword').value = "";
+        document.getElementById('confirmPassword').value ="";
+        alert("Пароль изменнен");
+    });
 }

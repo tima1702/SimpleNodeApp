@@ -44,6 +44,7 @@ function userLogin(){
         for(var key in userInfo){
             if(key != "password") sessionStorage.setItem(key,userInfo[key]);
         }
+        console.log(userInfo);
         //alert("Вход выполнен!");
         loadUserInfo();
     });

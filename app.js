@@ -68,10 +68,49 @@ app.post("/login", function(request,reponse){
         }
         reponse.send(JSON.stringify(user));
     });
-
 });
 
+app.post("/updateUserInfo", function(request,reponse){
+    if(!request.body) {
+        return response.sendStatus(400);
+    }
+    var json = request.body;
+    json = JSON.parse(json);
+    console.log(json);
+    User.findOneAndUpdate({"_id": json._id},{"$set":{"name":json.name,"age":json.age,"email":json.email}}).exec(function(err, user){
+        if(err) {
+            console.log(err);
+            return response.sendStatus(400);
+        } else {
+            console.log(user);
+        }
+    });
+    User.find({login: json.login},function (err,user){
+        if(err) {
+            reponse.send();
+            throw err;
+        }
+        reponse.send(JSON.stringify(user));
+    });
+});
 
+app.post("/updatePassword", function(request,reponse){
+    if(!request.body) {
+        return response.sendStatus(400);
+    }
+    var json = request.body;
+    json = JSON.parse(json);
+    console.log(request.body);
+    User.findOneAndUpdate({"login": json.login},{"$set":{"password":json.password}}).exec(function(err, user){
+        if(err) {
+            //console.log(err);
+            return reponse.sendStatus(400);
+        } else {
+            //console.log(user);
+            return reponse.send("true");
+        }
+    });
+});
 
 
 // начинаем прослушивать подключения на 3000 порту
