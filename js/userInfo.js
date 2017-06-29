@@ -69,12 +69,11 @@ function changeAll(){
         }
         var userInfo = p[0];
         sessionStorage.setItem("isLogin",true);
-        for(var key in userInfo)
-             sessionStorage.setItem(key,userInfo[key]);
+        for(var key in userInfo) sessionStorage.setItem(key,userInfo[key]);
+
+        setUserData();
+        //alert("Данные обновлены");
     });
-    //updateLocalFromSession();
-    setUserData();
-    alert("Данные обновлены");
 }
 
 function setUserData(){
@@ -157,7 +156,7 @@ function changePassword(){
     password = password.hashCode();
 
     var object = {
-        login: sessionStorage.getItem('login'),
+        accessToken: sessionStorage.getItem('accessToken'),
         password: password
     };
 
@@ -167,10 +166,16 @@ function changePassword(){
     VT.send('POST','/updatePassword',[object],function (e) {
         console.log(e);
     },function (p) {
+        if(p.numer == "-1"){
+            sessionStorage.clear();
+            loadLogin();
+            return;
+        }
         if(p != true){
             alert("Ошибка");
             return;
         };
+
         document.getElementById('inputPassword').value = "";
         document.getElementById('confirmPassword').value ="";
         alert("Пароль изменнен");

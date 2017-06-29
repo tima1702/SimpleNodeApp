@@ -105,7 +105,7 @@ app.post("/updateUserInfo", function(request,reponse){
     console.log(decoded);
     if(decoded == null){return reponse.send({
         numer:"-1",
-        description: "false login"
+        description: "false token"
     })}
     User.findOneAndUpdate({"login": decoded.login},{"$set":{"name":json.name,"age":json.age,"email":json.email}}).exec(function(err, user){
         if(err) {
@@ -133,18 +133,38 @@ app.post("/updatePassword", function(request,reponse){
     }
     var json = request.body;
     json = JSON.parse(json);
-    console.log(request.body);
-    User.findOneAndUpdate({"login": json.login},{"$set":{"password":json.password}}).exec(function(err, user){
+    var token = json.accessToken;
+    var decoded = jwt.decode(token);
+    console.log(decoded);
+    if(decoded == null){return reponse.send({
+        numer:"-1",
+        description: "false token"
+    })}
+    User.findOneAndUpdate({"login": decoded.login},{"$set":{"password":json.password}}).exec(function(err, user){
         if(err) {
             //console.log(err);
             return reponse.sendStatus(400);
         } else {
-            //console.log(user);
             return reponse.send("true");
         }
     });
 });
+app.post("/checkToken", function(request,reponse){
+    if(!request.body) {
+        return response.sendStatus(400);
+    }
+    var token = request.body[0];
+    //console.log(request.body[0]);
+    var decoded = jwt.decode(token);
+    //console.log(decoded);
+    if(decoded == null){return reponse.send({
+        numer:"-1",
+        description: "false token"
+    })}
+    return reponse.send({
+        numer:"1",
+        description: "Valid token"
+    });
+});
 
-
-// начинаем прослушивать подключения на 3000 порту
 app.listen(3000);

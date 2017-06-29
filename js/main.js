@@ -21,8 +21,9 @@ function removeAllError(){
 }
 
 function loadLogin(){
+    checkAccessToken();
 
-    if(sessionStorage.getItem('isLogin')){
+    if(sessionStorage.getItem('accessToken')){
         loadUserInfo();
         return;
     }
@@ -38,7 +39,9 @@ function loadLogin(){
 
 function loadRegistration(){
 
-    if(sessionStorage.getItem('isLogin')){
+    checkAccessToken();
+
+    if(sessionStorage.getItem('accessToken')){
         loadUserInfo();
         return;
     }
@@ -53,10 +56,13 @@ function loadRegistration(){
 
 function loadHome(){
 
-    if(!sessionStorage.getItem('isLogin')){
-        loadLogin();
+    checkAccessToken();
+
+    if(sessionStorage.getItem('accessToken')){
+        loadUserInfo();
         return;
     }
+
     navigation();
 
     VT.send('GET','/template/home.html',[],'',function (p) {
@@ -85,8 +91,10 @@ function loadTask() {
 
 function loadUserInfo(){
 
-    if(!sessionStorage.getItem('isLogin')){
-        loadLogin();
+    checkAccessToken();
+
+    if(sessionStorage.getItem('accessToken')){
+        loadUserInfo();
         return;
     }
 
@@ -106,7 +114,7 @@ function hideErr(query){
 
 function navigation(){
 
-    if(sessionStorage.getItem('isLogin')){
+    if(sessionStorage.getItem('accessToken')){
         VT.addClass('#nav-reg','hide');
         VT.addClass('#nav-log','hide');
         VT.removeClass('#nav-inf','hide');
@@ -125,7 +133,19 @@ function logOut() {
     loadLogin();
 }
 
-if(sessionStorage.getItem('isLogin')){
+function checkAccessToken(){
+
+    var token = sessionStorage.getItem('accessToken');
+    VT.send('POST','/checkToken',[token],function (e) {
+        console.log(e);
+    },function (p) {
+        if(p =="-1") sessionStorage.clear();
+})
+}
+
+checkAccessToken();
+
+if(sessionStorage.getItem('accessToken')){
     loadUserInfo();
 
 } else{
