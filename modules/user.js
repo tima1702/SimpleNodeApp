@@ -34,7 +34,6 @@ var findUserByLogin = function(loginUser,callback){
         //this.result = "1";
         console.log("Выход 3");
     });
-
     return result;
 }*/
 

@@ -25,6 +25,29 @@ function userLogin(){
 
     if(!validateLogin()) return false;
     var obj = getObjectLogin();
+    obj = JSON.stringify(obj);
+
+    VT.send('POST','/login',[obj], function (e) {
+        console.log(e);
+    },function (p) {
+        //console.log(p);
+        //var json = p;
+        //json = JSON.parse(json);
+        console.log(p);
+
+        if(p.length == 0){
+            alert("Пользователь с  таким логином или паролем не зарегистрирован!");
+            return false;
+        }
+        var userInfo = p[0];
+        sessionStorage.setItem("isLogin",true);
+        for(var key in userInfo){
+            if(key != "password") sessionStorage.setItem(key,userInfo[key]);
+        }
+        //alert("Вход выполнен!");
+        loadUserInfo();
+    });
+    /*
     var userInfo = localStorage.getItem(obj.login);
 
     if(userInfo == null && userInfo == undefined){
@@ -46,5 +69,6 @@ function userLogin(){
 
     loadUserInfo();
     //form.submit();
+    */
 }
 

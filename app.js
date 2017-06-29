@@ -46,15 +46,30 @@ app.post("/register", function (request, response) {
                     return;
                 }
                 response.send("1");
-            })
+            });
         } else {
             console.log('123');
-            response.send("2");}
+            response.send("2");
+        }
+    });
+});
+
+app.post("/login", function(request,reponse){
+    if(!request.body) {
+        return response.sendStatus(400);
+    }
+    var json = request.body;
+    json = JSON.parse(json);
+
+    User.find({login: json.login, password: json.password},function (err,user){
+        if(err) {
+            reponse.send();
+            throw err;
+        }
+        reponse.send(JSON.stringify(user));
     });
 
 });
-
-
 
 
 
