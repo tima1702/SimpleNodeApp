@@ -7,7 +7,7 @@ var userShema = new Schema({
     email: String,
     password: String,
     age: Number,
-    login: String
+    login: { type: String, unique: true }
 });
 
 var User = mongoose.model('User',userShema);

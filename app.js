@@ -1,4 +1,5 @@
 var express = require("express");
+var fs = require("fs");
 
 var app = express();
 
@@ -104,18 +105,11 @@ app.post("/login", function(request,reponse){
 
 
 
-app.post("/updateUserInfo", function(request,reponse){
-    if(!request.body) {
-        return response.sendStatus(400);
-    }
+app.post("/updateUserInfo",middleCheckToken, function(request,reponse){
+
     var json = request.body;
     json = JSON.parse(json);
-    var token = json.accessToken;
-    var login = checkToken(token);
-    if(login == "") return reponse.send({
-        numer: "-1",
-        descriptoin: "false token"
-    });
+    var login = request.login;
 
     User.findOneAndUpdate({"login": login},{"$set":{"name":json.name,"age":json.age,"email":json.email}}).exec(function(err, user){
         if(err) {
@@ -137,18 +131,12 @@ app.post("/updateUserInfo", function(request,reponse){
     });
 });
 
-app.post("/updatePassword", function(request,reponse){
-    if(!request.body) {
-        return response.sendStatus(400);
-    }
+app.post("/updatePassword",middleCheckToken, function(request,reponse){
+
     var json = request.body;
     json = JSON.parse(json);
-    var token = json.accessToken;
-    var login = checkToken(token);
-    if(login == "") return reponse.send({
-        numer: "-1",
-        descriptoin: "false token"
-    });
+    var login = request.login;
+
     User.findOneAndUpdate({"login": login},{"$set":{"password":json.password}}).exec(function(err, user){
         if(err) {
             //console.log(err);
@@ -159,47 +147,14 @@ app.post("/updatePassword", function(request,reponse){
     });
 });
 
-app.post("/checkToken", function(request,reponse){
-    if(!request.body) {
-        return response.sendStatus(400);
-    }
-    var json = request.body;
-    json = JSON.parse(json);
-    //console.log(request.body);
-    var token = json.accessToken;
-    var login = checkToken(token);
-    if(login == "") return reponse.send({
-        numer: "-1",
-        descriptoin: "false token"
-    });
-    User.find({login:login},function (err,users){
-
-        if(err) return reponse.send({
-            numer: "-1",
-            descriptoin: err
-        });
-
-        if(users.length != 1) return reponse.send({
-            numer: "-1",
-            descriptoin: "false token"
-        });
-    })
+app.post("/checkToken",middleCheckToken, function(request,reponse){
     return reponse.send({
         numer:"1",
         description: "Valid token"
     });
 });
 
-app.post("/getAllUser", function(request,reponse){
-    if(!request.body) {
-        return response.sendStatus(400);
-    }
-    var token = request.body;
-    var login = checkToken(token);
-    if(login == "") return reponse.send({
-        numer: "-1",
-        descriptoin: "false token"
-    });
+app.post("/getAllUser",middleCheckToken, function(request,reponse){
 
     User.find({},'name age login email',function (err,users) {
         if (err) return reponse.send({
@@ -210,37 +165,77 @@ app.post("/getAllUser", function(request,reponse){
     });
 });
 
-app.post("/deliteUser",function(request,reponse){
-    if(!request.body) {
-        return response.sendStatus(400);
-    }
-    var object = request.body;
+app.post("/deliteUser",middleCheckToken,function(request,reponse){
 
-    object = JSON.parse(object);
-    var token = object.accessToken;
-    var login = checkToken(token);
-    if(login == "") return reponse.send({
-        numer: "-1",
-        descriptoin: "false token"
+    var json = request.body;
+    json = JSON.parse(json);
+    var login = request.login;
+
+    User.remove({login:json.login},function (err) {
+    if(err) return reponse.send({
+        numer:"-1",
+        description:err
     });
 
-    User.remove({login:object.login},function (err) {
-        if(err) return reponse.send({
-            numer:"-1",
-            description:err
-        });
-
-        if(object.login == login) return reponse.send({
-            numer:"2",
-            description: "Удаляем сами себя"
-        });
-        return reponse.send({
-            numer:"1",
-            description: "Удалили пользователя"
-        });
+    if(json.login == login) return reponse.send({
+        numer:"2",
+        description: "Ваши данные удалены!"
+    });
+    return reponse.send({
+        numer:"1",
+        description: "Удалили пользователя"
+    });
     });
 });
 
+app.post('/getAdministration',middleCheckToken,function (request,reponse) {
+   var html = fs.readFileSync("./static/administration/administration.html");
+   reponse.end(html);
+});
+
+
+
+function middleCheckToken(request,reponse,next){
+
+    if(!request.body) {
+        return response.sendStatus(400);
+    }
+    var json = request.body;
+    json = JSON.parse(json);
+    var token = json.accessToken;
+    var login = "";
+    var decoded = jwt.decode(token);
+
+    if(decoded == null) return reponse.send({
+        numer: "-1",
+        descriptoin: "Session end"
+    });
+    var exp = Math.floor(Date.now() / 1000) + (60);
+
+    console.log("Exp:",decoded.exp," : ",exp);
+
+    if ((exp - decoded.exp) > 120) return reponse.send({
+        numer: "-1",
+        descriptoin: "Session end"
+    })
+    else login = decoded.login;
+
+    User.find({login:login},function (err,users){
+
+        if(err) return reponse.send({
+            numer: "-1",
+            descriptoin: err
+        });
+
+        if(users.length != 1) return reponse.send({
+            numer: "-1",
+            descriptoin: "Session end"
+        });
+    });
+
+    request.login = login;
+    next();
+}
 
 app.listen(port, function(){
     console.log('Сервер запущен порт:' + port);

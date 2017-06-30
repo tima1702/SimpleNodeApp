@@ -20,8 +20,10 @@ function removeAllError(){
     }
 }
 
-function loadLogin(){
+function loadLogin(helpMessage){
     checkAccessToken();
+    helpMessage = helpMessage || "";
+
 
     if(localStorage.getItem('accessToken')){
         loadUserInfo();
@@ -34,6 +36,12 @@ function loadLogin(){
     VT.send('GET','/static/login/login.html',[],'',function (p) {
         content.innerHTML +=p;
     });
+
+    window.setTimeout(writeHelpMessage,50,helpMessage);
+}
+function writeHelpMessage(helpMessage){
+    document.getElementById('help-message').innerHTML = "";
+    document.getElementById('help-message').innerHTML += helpMessage;
 }
 
 function loadRegistration(){
@@ -112,20 +120,36 @@ function loadUserInfo() {
 }
 
 function loadAdministration(){
-    console.log(localStorage.getItem('accessToken'));
+
     if(!localStorage.getItem('accessToken')){
         loadLogin();
         return;
     }
+    var object = {
+        accessToken: localStorage.getItem('accessToken')
+    };
+
+    object = JSON.stringify(object);
+    console.log(object);
 
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";
-    VT.send('GET','/static/administration/administration.html',[],'',function (p) {
-        content.innerHTML +=p;
+    VT.send('POST','getAdministration',[object],function (p) {
+        console.log(p);
+        loadLogin();
+        return;
+    },function (p) {
+        if(!p.numer) {
+            content.innerHTML += p;
+            window.setTimeout(getUsers,100);
+        }
+        else {
+            console.log(p);
+            loadLogin(p.description);
+            return;
+        }
     });
-
-    window.setTimeout(getUsers,100);
 }
 
 function hideErr(query){
@@ -170,7 +194,7 @@ function checkAccessToken(){
         console.log(p);
         if(p.numer =="-1") {
             localStorage.clear();
-            console.log(localStorage);
+            //console.log(localStorage);
         }
 });
 }

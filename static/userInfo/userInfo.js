@@ -48,8 +48,7 @@ function changeAll(){
         console.log(p);
         if(p.numer == "-1"){
             localStorage.clear();
-            loadLogin();
-            return;
+            return loadLogin(p.description);
         }
         var userInfo = p[0];
 
@@ -97,8 +96,7 @@ function changePassword(){
     },function (p) {
         if(p.numer == "-1"){
             localStorage.clear();
-            loadLogin();
-            return;
+            return loadLogin(p.descriptoin);
         }
         if(p != true){
             alert("Ошибка");

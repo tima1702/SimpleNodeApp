@@ -55,13 +55,13 @@ function deliteUser(login) {
     },function (p) {
         console.log(p);
         if(p.numer == "-1" || p.numer == "2") {
-            console.log(p.description);
+            //console.log(p.description);
             localStorage.clear();
-            loadLogin();
+            loadLogin(p.description);
             return;
         }
         if(p.numer == "1"){
-            console.log(p.description);
+            //console.log(p.description);
             getUsers();
         }
     });

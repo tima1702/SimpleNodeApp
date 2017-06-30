@@ -79,3 +79,7 @@ p{
 .second-password{
     margin-bottom: 25px;
 }
+.description{
+    font-size: medium;
+    font-style: italic;
+}
