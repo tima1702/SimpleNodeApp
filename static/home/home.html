@@ -1,0 +1,26 @@
+<div class="col-md-6 col-md-offset-3 home-page">
+    <h2>Редкатирование домов:</h2>
+    <div class="row">
+            <label>Дома:</label>
+            <select id="task5" onchange="task5_2()" class="form-control">
+            </select>
+            <br>
+            <label>Изменить название:</label>
+            <br>
+            <input type="text" id="homeName" class="form-control" oninput="removeErrorRoom('#homeName')">
+            <button onclick="task5_3()" class="btn btn-default col-md-3">Обновить</button>
+
+    </div>
+    <div class="row">
+            <label>Комнаты</label>
+            <select id="rooms" onchange="onRoomChange()" class="form-control">
+            </select>
+            <br>
+            <label>Изменить название:</label>
+            <br>
+
+            <input type="text" id="roomName" class="form-control col-md-3" oninput="removeErrorRoom('#roomName')">
+            <button onclick="changeRoomName()" class="btn btn-default col-md-3">Обновить</button>
+
+    </div>
+</div>

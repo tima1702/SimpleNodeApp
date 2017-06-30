@@ -1,5 +1,3 @@
-// подключение express
-console.log(process.env.PORT);
 var express = require("express");
 
 var app = express();
@@ -78,7 +76,7 @@ app.post("/register", function (request, response) {
     });
 });
 
-app.post("/login",Auth, function(request,reponse){
+app.post("/login", function(request,reponse){
     if(!request.body) {
         return response.sendStatus(400);
     }
@@ -165,7 +163,10 @@ app.post("/checkToken", function(request,reponse){
     if(!request.body) {
         return response.sendStatus(400);
     }
-    var token = request.body[0];
+    var json = request.body;
+    json = JSON.parse(json);
+    //console.log(request.body);
+    var token = json.accessToken;
     var login = checkToken(token);
     if(login == "") return reponse.send({
         numer: "-1",
@@ -193,7 +194,7 @@ app.post("/getAllUser", function(request,reponse){
     if(!request.body) {
         return response.sendStatus(400);
     }
-    var token = request.body[0];
+    var token = request.body;
     var login = checkToken(token);
     if(login == "") return reponse.send({
         numer: "-1",
