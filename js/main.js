@@ -28,7 +28,6 @@ function loadLogin(){
         return;
     }
 
-
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";

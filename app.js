@@ -24,20 +24,12 @@ var impObject = {
 var checkToken = function (token) {
     var decoded = jwt.decode(token);
 
-    //console.log(decoded);
     if(decoded == null) return "";
     var exp = Math.floor(Date.now() / 1000) + (60);
+    console.log("Exp:",decoded.exp," : ",exp);
     if ((exp - decoded.exp) > 120) return "";
-
-
-
     return decoded.login;
-
 }
-
-
-
-
 
 mongoose.connect(impObject.connStr);
 
@@ -113,7 +105,6 @@ app.post("/updateUserInfo", function(request,reponse){
     }
     var json = request.body;
     json = JSON.parse(json);
-    console.log(json);
     var token = json.accessToken;
     var login = checkToken(token);
     if(login == "") return reponse.send({
@@ -148,13 +139,12 @@ app.post("/updatePassword", function(request,reponse){
     var json = request.body;
     json = JSON.parse(json);
     var token = json.accessToken;
-    var decoded = jwt.decode(token);
-    console.log(decoded);
-    if(decoded == null){return reponse.send({
-        numer:"-1",
-        description: "false token"
-    })}
-    User.findOneAndUpdate({"login": decoded.login},{"$set":{"password":json.password}}).exec(function(err, user){
+    var login = checkToken(token);
+    if(login == "") return reponse.send({
+        numer: "-1",
+        descriptoin: "false token"
+    });
+    User.findOneAndUpdate({"login": login},{"$set":{"password":json.password}}).exec(function(err, user){
         if(err) {
             //console.log(err);
             return reponse.sendStatus(400);
@@ -169,14 +159,23 @@ app.post("/checkToken", function(request,reponse){
         return response.sendStatus(400);
     }
     var token = request.body[0];
-    //console.log(request.body[0]);
-    var decoded = jwt.decode(token);
-    console.log(decoded);
-    console.log("exp:" ,Math.floor(Date.now() / 1000) + (60));
-    if(decoded == null){return reponse.send({
-        numer:"-1",
-        description: "false token"
-    })}
+    var login = checkToken(token);
+    if(login == "") return reponse.send({
+        numer: "-1",
+        descriptoin: "false token"
+    });
+    User.find({login:login},function (err,users){
+
+        if(err) return reponse.send({
+            numer: "-1",
+            descriptoin: err
+        });
+
+        if(users.length != 1) return reponse.send({
+            numer: "-1",
+            descriptoin: "false token"
+        });
+    })
     return reponse.send({
         numer:"1",
         description: "Valid token"
@@ -188,11 +187,12 @@ app.post("/getAllUser", function(request,reponse){
         return response.sendStatus(400);
     }
     var token = request.body[0];
-    var decoded = jwt.decode(token);
-    if(decoded == null){return reponse.send({
-        numer:"-1",
-        description: "false token"
-    })}
+    var login = checkToken(token);
+    if(login == "") return reponse.send({
+        numer: "-1",
+        descriptoin: "false token"
+    });
+
     User.find({},'name age login email',function (err,users) {
         if (err) return reponse.send({
             numer: "-1",
@@ -210,19 +210,19 @@ app.post("/deliteUser",function(request,reponse){
 
     object = JSON.parse(object);
     var token = object.accessToken;
-    var decoded = jwt.decode(token);
-    if(decoded == null){return reponse.send({
-        numer:"-1",
-        description: "false token"
-    })}
+    var login = checkToken(token);
+    if(login == "") return reponse.send({
+        numer: "-1",
+        descriptoin: "false token"
+    });
+
     User.remove({login:object.login},function (err) {
         if(err) return reponse.send({
             numer:"-1",
             description:err
         });
-        console.log(object.login);
-        console.log(decoded);
-        if(object.login == decoded.login) return reponse.send({
+
+        if(object.login == login) return reponse.send({
             numer:"2",
             description: "Удаляем сами себя"
         });
