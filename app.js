@@ -1,4 +1,5 @@
 // подключение express
+console.log(process.env.PORT);
 var express = require("express");
 
 var app = express();
@@ -11,10 +12,13 @@ var User = require("./modules/user");
 
 var jwt = require('jsonwebtoken');
 
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
 var mongoose = require("mongoose");
+
+
 
 var impObject = {
     'jwtSecret': 'xtyqwtzt00700tytx',
@@ -38,6 +42,7 @@ app.set('jwtSecret', impObject.jwtSecret);
 app.use(express.static(__dirname + "/"));
 
 app.get("/", function(request, response){
+    response.sendfile('index.html');
 });
 
 
@@ -73,7 +78,7 @@ app.post("/register", function (request, response) {
     });
 });
 
-app.post("/login", function(request,reponse){
+app.post("/login",Auth, function(request,reponse){
     if(!request.body) {
         return response.sendStatus(400);
     }
@@ -98,6 +103,8 @@ app.post("/login", function(request,reponse){
         });
     });
 });
+
+
 
 app.post("/updateUserInfo", function(request,reponse){
     if(!request.body) {
@@ -234,4 +241,6 @@ app.post("/deliteUser",function(request,reponse){
 });
 
 
-app.listen(3000);
+app.listen(port, function(){
+    console.log('Сервер запущен порт:' + port);
+});

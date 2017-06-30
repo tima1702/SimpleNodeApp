@@ -9,7 +9,7 @@ function registration(form){
     },function (p) {
         //console.log(p);
         if(p == "1") {
-            alert("Вы зарегистрированны в системе!");
+            //alert("Вы зарегистрированны в системе!");
             loadLogin();
         } else alert("Пользователь с таким логином зарегистрировался в системе");
     });
