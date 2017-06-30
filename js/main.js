@@ -58,8 +58,8 @@ function loadHome(){
 
     checkAccessToken();
 
-    if(sessionStorage.getItem('accessToken')){
-        loadUserInfo();
+    if(!sessionStorage.getItem('accessToken')){
+        loadLogin();
         return;
     }
 
@@ -93,8 +93,8 @@ function loadUserInfo(){
 
     checkAccessToken();
 
-    if(sessionStorage.getItem('accessToken')){
-        loadUserInfo();
+    if(!sessionStorage.getItem('accessToken')){
+        loadLogin();
         return;
     }
 
@@ -142,8 +142,6 @@ function checkAccessToken(){
         if(p =="-1") sessionStorage.clear();
 })
 }
-
-checkAccessToken();
 
 if(sessionStorage.getItem('accessToken')){
     loadUserInfo();

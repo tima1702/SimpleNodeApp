@@ -35,39 +35,15 @@ function userLogin(){
         //json = JSON.parse(json);
         console.log(p);
 
-        if(p.length == 0){
-            alert("Пользователь с  таким логином или паролем не зарегистрирован!");
+        if(p.numer == '-1'){
+            alert(p.description);
             return false;
         }
         var userInfo = p;
         sessionStorage.setItem("isLogin",true);
         for(var key in userInfo) sessionStorage.setItem(key,userInfo[key]);
         console.log(userInfo);
-        //alert("Вход выполнен!");
         loadUserInfo();
     });
-    /*
-    var userInfo = localStorage.getItem(obj.login);
-
-    if(userInfo == null && userInfo == undefined){
-        alert("Пользователь с  таким логином не зарегистрирован!");
-        return false;
-    };
-
-    userInfo = JSON.parse(userInfo);
-
-    if(obj.password != userInfo.password) {
-        alert("Пароли не совпадают!");
-        return false;
-    };
-    sessionStorage.setItem("isLogin",true);
-    for(var key in userInfo){
-        if(key != "password") sessionStorage.setItem(key,userInfo[key]);
-    }
-    alert("Вход выполнен!");
-
-    loadUserInfo();
-    //form.submit();
-    */
 }
 

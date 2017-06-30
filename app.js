@@ -72,13 +72,14 @@ app.post("/login", function(request,reponse){
     }
     var json = request.body;
     json = JSON.parse(json);
-
+    console.log(json);
     User.find({login: json.login, password: json.password},function (err,users){
         if(err) {
-            reponse.send();
-            throw err;
+            return reponse.send({numer: '-1', description:err});
         }
+        if (users.length != 1) return reponse.send({numer: '-1', description:"Не верный пароль"});
         var user = users[0];
+        console.log(users);
         var accessToken = jwt.sign({login: user.login}, app.get('jwtSecret'), {
             expiresIn: 60
         });
