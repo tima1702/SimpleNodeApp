@@ -30,9 +30,7 @@ function userLogin(){
     VT.send('POST','/login',[obj], function (e) {
         console.log(e);
     },function (p) {
-        //console.log(p);
-        //var json = p;
-        //json = JSON.parse(json);
+
         console.log(p);
 
         if(p.numer == '-1'){
@@ -40,8 +38,7 @@ function userLogin(){
             return false;
         }
         var userInfo = p;
-        sessionStorage.setItem("isLogin",true);
-        for(var key in userInfo) sessionStorage.setItem(key,userInfo[key]);
+        for(var key in userInfo) localStorage.setItem(key,userInfo[key]);
         console.log(userInfo);
         loadUserInfo();
     });

@@ -1,19 +1,3 @@
-function updateLocalFromSession(){
-
-    var session = sessionStorage;
-    var userInfo = localStorage.getItem(session.login);
-
-    userInfo = JSON.parse(userInfo);
-    //переписать
-    for(var key in userInfo)
-        for(var key1 in session)
-            if(key1 == key) userInfo[key] = session[key];
-
-    userInfo = JSON.stringify(userInfo);
-
-    localStorage.setItem(session.login,userInfo);
-}
-
 function getInfoObj(){
     var object = new Object();
 
@@ -32,7 +16,7 @@ function validInfo(object){
     if(!parrent.test(str)) VT.addClass('.help-email','error');
 
     str = object.name;
-    parrent = parrent = /[a-zA-Zа-яА-Я]{3,25}/;
+    parrent = parrent = /[a-zа-я]{3,25}/;
     if((!parrent.test(str)) & (str != "")) VT.addClass('.help-name','error');
 
     if(document.getElementById('age').value != "") {
@@ -46,7 +30,7 @@ function validInfo(object){
 }
 function updateSession(object){
     for(key in object)
-        sessionStorage.setItem(key,object[key]);
+        localStorage.setItem(key,object[key]);
 }
 
 function changeAll(){
@@ -56,20 +40,20 @@ function changeAll(){
 
     updateSession(object);
 
-    object = JSON.stringify(sessionStorage);
+    object = JSON.stringify(localStorage);
 
     VT.send('POST','/updateUserInfo',[object], function (e) {
         console.log(e);
     },function (p) {
         console.log(p);
         if(p.numer == "-1"){
-            sessionStorage.clear();
+            localStorage.clear();
             loadLogin();
             return;
         }
         var userInfo = p[0];
-        sessionStorage.setItem("isLogin",true);
-        for(var key in userInfo) sessionStorage.setItem(key,userInfo[key]);
+
+        for(var key in userInfo) localStorage.setItem(key,userInfo[key]);
 
         setUserData();
         //alert("Данные обновлены");
@@ -77,7 +61,7 @@ function changeAll(){
 }
 
 function setUserData(){
-    var session = sessionStorage;
+    var session = localStorage;
 
     document.getElementById('age').value = session.age;
 
@@ -87,61 +71,6 @@ function setUserData(){
     document.getElementById('firstName').value = session.name;
 }
 
-
-function changeName(){
-    VT.removeClass('.help-name','error');
-
-    var name = document.getElementById('firstName').value;
-    var parrent = /[a-zA-Zа-яА-Я]{3,25}/;
-
-    if(!parrent.test(name)){
-        VT.addClass('.help-name','error');
-        return false;
-    };
-
-    sessionStorage.setItem('name',name);
-    updateLocalFromSession();
-
-    document.getElementById('firstName').value = "";
-    alert("Имя измененно");
-}
-
-function changeAge(){
-    VT.removeClass('.help-age');
-
-    var age = document.getElementById('age').value;
-    age = Number(age);
-
-    if( age < 1 || age >120 ){
-        VT.addClass('.help-age','error');
-        return false;
-    }
-
-    sessionStorage.setItem('age',age);
-    updateLocalFromSession();
-
-
-    document.getElementById('age').value = "";
-    alert("Возраст изменен");
-}
-
-function changeEmail(){
-    VT.removeClass('.help-email','error');
-
-    var email = document.getElementById('inputEmail').value;
-    var parrent = /[0-9a-z_]+@[0-9a-z_]+\.[a-z]{2,5}/i;;
-
-    if(!parrent.test(email)){
-        VT.addClass('.help-email','error');
-        return false;
-    };
-
-    sessionStorage.setItem('email',email);
-    updateLocalFromSession();
-
-    document.getElementById('inputEmail').value = "";
-    alert("Почта измененна");
-}
 
 function changePassword(){
     VT.removeClass('.help-password','error');
@@ -156,7 +85,7 @@ function changePassword(){
     password = password.hashCode();
 
     var object = {
-        accessToken: sessionStorage.getItem('accessToken'),
+        accessToken: localStorage.getItem('accessToken'),
         password: password
     };
 
@@ -167,7 +96,7 @@ function changePassword(){
         console.log(e);
     },function (p) {
         if(p.numer == "-1"){
-            sessionStorage.clear();
+            localStorage.clear();
             loadLogin();
             return;
         }

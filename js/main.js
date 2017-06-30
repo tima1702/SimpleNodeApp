@@ -89,11 +89,10 @@ function loadTask() {
 
 }
 
-function loadUserInfo(){
+function loaderUserInfo(){
 
-    checkAccessToken();
-
-    if(!sessionStorage.getItem('accessToken')){
+    console.log(localStorage.getItem('accessToken'));
+    if(!localStorage.getItem('accessToken')){
         loadLogin();
         return;
     }
@@ -108,13 +107,18 @@ function loadUserInfo(){
     window.setTimeout(setUserData,100);
 }
 
+function loadUserInfo() {
+    checkAccessToken();
+    window.setTimeout(loaderUserInfo,30);
+}
+
 function hideErr(query){
     VT.removeClass(query, "error");
 }
 
 function navigation(){
 
-    if(sessionStorage.getItem('accessToken')){
+    if(localStorage.getItem('accessToken')){
         VT.addClass('#nav-reg','hide');
         VT.addClass('#nav-log','hide');
         VT.removeClass('#nav-inf','hide');
@@ -129,21 +133,26 @@ function navigation(){
     }
 }
 function logOut() {
-    sessionStorage.clear();
+    localStorage.clear();
     loadLogin();
 }
 
 function checkAccessToken(){
 
-    var token = sessionStorage.getItem('accessToken');
+    var token = localStorage.getItem('accessToken');
     VT.send('POST','/checkToken',[token],function (e) {
         console.log(e);
     },function (p) {
-        if(p =="-1") sessionStorage.clear();
+        console.log(p);
+        if(p.numer =="-1") {
+
+            localStorage.clear();
+            console.log(localStorage);
+        }
 })
 }
 
-if(sessionStorage.getItem('accessToken')){
+if(localStorage.getItem('accessToken')){
     loadUserInfo();
 
 } else{

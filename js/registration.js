@@ -3,12 +3,7 @@ function registration(form){
     if(!validateRegistration()) return false;
     var obj=getObjectRegistration();
     var serialObj =JSON.stringify(obj);
-    //console.log(serialObj);
-    /*if(!(localStorage.getItem(obj.login) == null || localStorage.getItem(obj.login) == undefined)) {
-        alert("Пользователь с таким логином зарегистрировался в системе");
-        return false;
-    }*/
-    //localStorage.setItem(obj.login,serialObj);
+
     VT.send('POST','/register',[serialObj], function (e) {
         console.log(e);
     },function (p) {
@@ -19,12 +14,10 @@ function registration(form){
         } else alert("Пользователь с таким логином зарегистрировался в системе");
     });
     form.reset();
-    //alert("Вы зарегистрированны в системе!");
-    //loadLogin();
+
 }
 
 function getObjectRegistration(){
-    //var form = document.getElementById('form');
     var object = new Object();
 
     object.login = document.getElementById('login').value;
