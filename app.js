@@ -1,6 +1,6 @@
 // подключение express
 var express = require("express");
-// создаем объект приложения
+
 var app = express();
 
 var bodyParser = require('body-parser');
@@ -16,12 +16,28 @@ app.use(bodyParser.json());
 
 var mongoose = require("mongoose");
 
-//mongoose.connect('mongodb://localhost/test');
-
 var impObject = {
     'jwtSecret': 'xtyqwtzt00700tytx',
     'connStr': 'mongodb://localhost/test'
 };
+
+var checkToken = function (token) {
+    var decoded = jwt.decode(token);
+
+    //console.log(decoded);
+    if(decoded == null) return "";
+    var exp = Math.floor(Date.now() / 1000) + (60);
+    if ((exp - decoded.exp) > 120) return "";
+
+
+
+    return decoded.login;
+
+}
+
+
+
+
 
 mongoose.connect(impObject.connStr);
 
@@ -29,7 +45,6 @@ app.set('jwtSecret', impObject.jwtSecret);
 
 app.use(express.static(__dirname + "/"));
 
-// определяем обработчик для маршрута "/"
 app.get("/", function(request, response){
 });
 
@@ -80,9 +95,7 @@ app.post("/login", function(request,reponse){
         if (users.length != 1) return reponse.send({numer: '-1', description:"Не верный пароль"});
         var user = users[0];
         console.log(users);
-        var accessToken = jwt.sign({login: user.login}, app.get('jwtSecret'), {
-            expiresIn: 60
-        });
+        var accessToken = jwt.sign({exp: Math.floor(Date.now() / 1000) + (60), login: user.login}, app.get('jwtSecret'));
         console.log(user);
 
         reponse.send({
@@ -102,23 +115,23 @@ app.post("/updateUserInfo", function(request,reponse){
     json = JSON.parse(json);
     console.log(json);
     var token = json.accessToken;
-    var decoded = jwt.decode(token);
-    console.log(decoded);
-    if(decoded == null){return reponse.send({
-        numer:"-1",
-        description: "false token"
-    })}
-    User.findOneAndUpdate({"login": decoded.login},{"$set":{"name":json.name,"age":json.age,"email":json.email}}).exec(function(err, user){
+    var login = checkToken(token);
+    if(login == "") return reponse.send({
+        numer: "-1",
+        descriptoin: "false token"
+    });
+
+    User.findOneAndUpdate({"login": login},{"$set":{"name":json.name,"age":json.age,"email":json.email}}).exec(function(err, user){
         if(err) {
             console.log(err);
-            return response.sendStatus(400);
+            return reponse.sendStatus(400);
         }
     });
-    User.find({login: decoded.login},function (err,users){
-        if(err) {
-            reponse.send();
-            throw err;
-        }
+    User.find({login: login},function (err,users){
+        if(err) reponse.send({
+            numer: "-1",
+            descriptoin: err
+        });
         var user = users[0];
         reponse.send({
             'name': user.name,
@@ -150,6 +163,7 @@ app.post("/updatePassword", function(request,reponse){
         }
     });
 });
+
 app.post("/checkToken", function(request,reponse){
     if(!request.body) {
         return response.sendStatus(400);
@@ -157,7 +171,8 @@ app.post("/checkToken", function(request,reponse){
     var token = request.body[0];
     //console.log(request.body[0]);
     var decoded = jwt.decode(token);
-    //console.log(decoded);
+    console.log(decoded);
+    console.log("exp:" ,Math.floor(Date.now() / 1000) + (60));
     if(decoded == null){return reponse.send({
         numer:"-1",
         description: "false token"
@@ -167,5 +182,56 @@ app.post("/checkToken", function(request,reponse){
         description: "Valid token"
     });
 });
+
+app.post("/getAllUser", function(request,reponse){
+    if(!request.body) {
+        return response.sendStatus(400);
+    }
+    var token = request.body[0];
+    var decoded = jwt.decode(token);
+    if(decoded == null){return reponse.send({
+        numer:"-1",
+        description: "false token"
+    })}
+    User.find({},'name age login email',function (err,users) {
+        if (err) return reponse.send({
+            numer: "-1",
+            description: err
+        });
+        return reponse.send(users);
+    });
+});
+
+app.post("/deliteUser",function(request,reponse){
+    if(!request.body) {
+        return response.sendStatus(400);
+    }
+    var object = request.body;
+
+    object = JSON.parse(object);
+    var token = object.accessToken;
+    var decoded = jwt.decode(token);
+    if(decoded == null){return reponse.send({
+        numer:"-1",
+        description: "false token"
+    })}
+    User.remove({login:object.login},function (err) {
+        if(err) return reponse.send({
+            numer:"-1",
+            description:err
+        });
+        console.log(object.login);
+        console.log(decoded);
+        if(object.login == decoded.login) return reponse.send({
+            numer:"2",
+            description: "Удаляем сами себя"
+        });
+        return reponse.send({
+            numer:"1",
+            description: "Удалили пользователя"
+        });
+    });
+});
+
 
 app.listen(3000);

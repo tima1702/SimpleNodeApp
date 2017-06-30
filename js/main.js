@@ -23,7 +23,7 @@ function removeAllError(){
 function loadLogin(){
     checkAccessToken();
 
-    if(sessionStorage.getItem('accessToken')){
+    if(localStorage.getItem('accessToken')){
         loadUserInfo();
         return;
     }
@@ -41,7 +41,7 @@ function loadRegistration(){
 
     checkAccessToken();
 
-    if(sessionStorage.getItem('accessToken')){
+    if(localStorage.getItem('accessToken')){
         loadUserInfo();
         return;
     }
@@ -58,7 +58,7 @@ function loadHome(){
 
     checkAccessToken();
 
-    if(!sessionStorage.getItem('accessToken')){
+    if(!localStorage.getItem('accessToken')){
         loadLogin();
         return;
     }
@@ -112,6 +112,23 @@ function loadUserInfo() {
     window.setTimeout(loaderUserInfo,30);
 }
 
+function loadAdministration(){
+    console.log(localStorage.getItem('accessToken'));
+    if(!localStorage.getItem('accessToken')){
+        loadLogin();
+        return;
+    }
+
+    navigation();
+    var content = document.getElementById('content');
+    content.innerHTML = "";
+    VT.send('GET','/template/administration.html',[],'',function (p) {
+        content.innerHTML +=p;
+    });
+
+    window.setTimeout(getUsers,100);
+}
+
 function hideErr(query){
     VT.removeClass(query, "error");
 }
@@ -124,14 +141,17 @@ function navigation(){
         VT.removeClass('#nav-inf','hide');
         VT.removeClass('#nav-home','hide');
         VT.removeClass('#nav-out','hide');
+        VT.removeClass('#nav-adm','hide');
     } else{
         VT.removeClass('#nav-reg','hide');
         VT.removeClass('#nav-log','hide');
         VT.addClass('#nav-inf','hide');
         VT.addClass('#nav-home','hide');
         VT.addClass('#nav-out','hide');
+        VT.addClass('#nav-adm','hide');
     }
 }
+
 function logOut() {
     localStorage.clear();
     loadLogin();
@@ -140,6 +160,7 @@ function logOut() {
 function checkAccessToken(){
 
     var token = localStorage.getItem('accessToken');
+    if(!token) return;
     VT.send('POST','/checkToken',[token],function (e) {
         console.log(e);
     },function (p) {
@@ -149,7 +170,7 @@ function checkAccessToken(){
             localStorage.clear();
             console.log(localStorage);
         }
-})
+});
 }
 
 if(localStorage.getItem('accessToken')){
