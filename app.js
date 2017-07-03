@@ -19,8 +19,6 @@ app.use(bodyParser.json());
 
 var mongoose = require("mongoose");
 
-
-
 var impObject = {
     'jwtSecret': 'xtyqwtzt00700tytx',
     'connStr': 'mongodb://localhost/test'
@@ -68,6 +66,8 @@ app.post("/register", function (request, response) {
         }
     });
 });
+
+
 
 app.post("/login", function(request,reponse){
     if(!request.body) {
@@ -207,7 +207,7 @@ app.post("/addNewHouse",middleCheckToken,function (request,reponse) {
         });
         else reponse.send({
             numer:1,
-            description:"Комната добавлена!"
+            description:"Дом добавлен!"
         });
     });
 });
@@ -239,10 +239,90 @@ app.post("/deleteHouse",middleCheckToken,function (request,reponse) {
             numer: "-1",
             description: err
         });
-        return reponse.send({
-            numer: "1",
-            description: "Дом удален"
+    });
+    Room.remove({home:json._id},function (err) {
+        if (err) return reponse.send({
+            numer: "-1",
+            description: err
         });
+    });
+    return reponse.send({
+        numer: "1",
+        description: "Дом удален"
+    });
+});
+
+app.post("/getAllRooms",middleCheckToken,function (request,reponse) {
+
+    var json = request.body;
+    json = JSON.parse(json);
+
+    var home= json.home;
+    Room.find({home:home},function (err,rooms) {
+        if(err)return reponse.send({
+            numer:"-1",
+            description:err
+        });
+        reponse.send(rooms);
+    });
+});
+
+
+app.post("/addRoom",middleCheckToken,function (request,reponse) {
+    var json = request.body;
+    json = JSON.parse(json);
+    console.log(json);
+    var obj = {
+        name: json.name,
+        home: json.home
+    };
+
+    var newRoom = new Room(obj);
+
+    newRoom.save(function (error){
+        if(error) reponse.send({
+            numer:-1,
+            description:error
+        });
+        else reponse.send({
+            numer:1,
+            description:"Комната добавлена!"
+        });
+    });
+});
+
+app.post("/changeNameRoom",middleCheckToken,function (request,reponse) {
+
+    var json = request.body;
+    json = JSON.parse(json);
+
+    Room.findOneAndUpdate({"_id": json._id,"home":json.home},{"$set":{"name":json.name}}).exec(function(err){
+        if(err) reponse.send({
+            numer:"-1",
+            description:err
+        });
+        else reponse.send({
+            numer: "1",
+            description:"Имя изменено!"
+        });
+    });
+});
+
+app.post("/deleteRoom",middleCheckToken,function (request,reponse) {
+
+    var json = request.body;
+    json = JSON.parse(json);
+    console.log(json);
+    Room.remove({_id:json._id, home:json.home},function (err) {
+        if (err) return reponse.send({
+            numer: "-1",
+            description: err
+        });
+    });
+
+    return reponse.send({
+        numer: "1",
+        description: "Комната удалена"
     });
 });
 
@@ -289,15 +369,15 @@ function middleCheckToken(request,reponse,next){
 
     if(decoded == null) return reponse.send({
         numer: "-1",
-        descriptoin: "Session end 1"
+        description: "Неверный токен"
     });
     var exp = Math.floor(Date.now() / 1000) + (60);
 
     console.log("Exp:",decoded.exp," : ",exp);
 
-    if ((exp - decoded.exp) > 600) return reponse.send({
+    if ((exp - decoded.exp) > 120) return reponse.send({
         numer: "-1",
-        descriptoin: "Session end 3"
+        description: "Время действия токена истекло"
     })
     else{
         login = decoded.login;
@@ -308,12 +388,12 @@ function middleCheckToken(request,reponse,next){
 
         if(err) return reponse.send({
             numer: "-1",
-            descriptoin: err
+            description: err
         });
 
         if(users.length != 1) return reponse.send({
             numer: "-1",
-            descriptoin: "Session end 2"
+            description: "Пользователя с таким токеном не существует"
         });
     });
 

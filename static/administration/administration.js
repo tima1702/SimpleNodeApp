@@ -11,7 +11,7 @@ function addTr(val){
     str += addTd(val.age);
     str += addTd(val.button);
     str +="</tr>";
-    console.log(str);
+
     VT.addEl("#tabl",str);
 }
 
@@ -25,7 +25,7 @@ function getUsers(){
     VT.send('POST','/getAllUser',[obj],function (e) {
         console.log(e);
     },function (p) {
-        console.log(p);
+        //console.log(p);
         if(p.numer == '-1') {
             localStorage.clear();
             loadLogin();
@@ -56,7 +56,7 @@ function deliteUser(login) {
     VT.send('POST','/deliteUser',[object],function (e) {
         console.log(e);
     },function (p) {
-        console.log(p);
+        //console.log(p);
         if(p.numer == "-1" || p.numer == "2") {
             //console.log(p.description);
             localStorage.clear();

@@ -6,14 +6,14 @@
             <select id="task5" onchange="task5_2()" class="form-control">
             </select>
             <br>
-            <button onclick="deleteHouse()" class="btn btn-default col-md-3">Удалить</button>
+            <button onclick="deleteHouse()" class="btn btn-default col-md-3" id="delHome">Удалить</button>
         </div>
         <br>
         <div class="row">
             <label>Изменить название:</label>
             <br>
             <input type="text" id="homeName" class="form-control" oninput="removeErrorRoom('#homeName')">
-            <button onclick="changeHouseName()" class="btn btn-default col-md-3">Обновить</button>
+            <button onclick="changeHouseName()" class="btn btn-default col-md-3" id="upHome">Обновить</button>
         </div>
             <br>
         <div class="row">
@@ -28,19 +28,21 @@
             <label>Комнаты</label>
             <select id="rooms" onchange="onRoomChange()" class="form-control">
             </select>
+            <br>
+            <button onclick="deleteRoom()" class="btn btn-default col-md-3" id="delRoom">Удалить</button>
         </div>
         <br>
         <div class="row">
             <label>Изменить название:</label>
             <br>
             <input type="text" id="roomName" class="form-control col-md-3" oninput="removeErrorRoom('#roomName')">
-            <button onclick="changeRoomName()" class="btn btn-default col-md-3">Обновить</button>
+            <button onclick="changeRoomName()" class="btn btn-default col-md-3" id="upRoom">Обновить</button>
         </div>
         <div class="row">
             <label>Добавить новую комнату:</label>
             <br>
             <input type="text" id="newRoom" class="form-control" oninput="removeErrorRoom('#newRoom')">
-            <button onclick="" class="btn btn-default col-md-3">Добавить</button>
+            <button onclick="newRoom()" class="btn btn-default col-md-3" id="addRoom">Добавить</button>
         </div>
     </div>
 </div>
