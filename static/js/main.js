@@ -21,9 +21,8 @@ function removeAllError(){
 }
 
 function loadLogin(helpMessage){
-    checkAccessToken();
-    helpMessage = helpMessage || "";
 
+    helpMessage = helpMessage || "";
 
     if(localStorage.getItem('accessToken')){
         loadUserInfo();
@@ -33,8 +32,11 @@ function loadLogin(helpMessage){
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";
-    VT.send('GET','/static/login/login.html',[],'',function (p) {
-        content.innerHTML +=p;
+    VT.send('POST','getLogin',[],function (p){
+        console.log(p);
+        },
+        function (p) {
+            content.innerHTML +=p
     });
 
     window.setTimeout(writeHelpMessage,50,helpMessage);
@@ -46,7 +48,6 @@ function writeHelpMessage(helpMessage){
 
 function loadRegistration(){
 
-    checkAccessToken();
 
     if(localStorage.getItem('accessToken')){
         loadUserInfo();
@@ -56,70 +57,15 @@ function loadRegistration(){
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";
-    VT.send('GET','/static/registration/registration.html',[],'',function (p) {
-        content.innerHTML +=p;
-    });
+    VT.send('POST','getRegistration',[],function (p){
+            console.log(p);
+        },
+        function (p) {
+            content.innerHTML +=p
+        });
 }
 
-function loadHome(){
-
-    checkAccessToken();
-
-    if(!localStorage.getItem('accessToken')){
-        loadLogin();
-        return;
-    }
-
-    navigation();
-
-    VT.send('GET','static/home/home.html',[],'',function (p) {
-        document.getElementById('content').innerHTML = "";
-        document.getElementById('content').innerHTML +=p;
-    });
-
-    document.getElementById('content')
-
-    return true;
-
-}
-
-function loadHomes() {
-    loadHome();
-
-    window.setTimeout(loadTask,100);
-}
-
-function loadTask() {
-
-    task5_1();
-    task5_2();
-
-}
-
-function loaderUserInfo(){
-
-    console.log(localStorage.getItem('accessToken'));
-    if(!localStorage.getItem('accessToken')){
-        loadLogin();
-        return;
-    }
-
-    navigation();
-    var content = document.getElementById('content');
-    content.innerHTML = "";
-    VT.send('GET','/static/userInfo/userInfo.html',[],'',function (p) {
-        content.innerHTML +=p;
-    });
-
-    window.setTimeout(setUserData,100);
-}
-
-function loadUserInfo() {
-    checkAccessToken();
-    window.setTimeout(loaderUserInfo,30);
-}
-
-function loadAdministration(){
+function loadHomes(){
 
     if(!localStorage.getItem('accessToken')){
         loadLogin();
@@ -135,9 +81,86 @@ function loadAdministration(){
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";
-    VT.send('POST','getAdministration',[object],function (p) {
+    VT.send('POST','getHouses',[object],function (p) {
         console.log(p);
+        localStorage.clear();
+        loadLogin(p.description);
+        return;
+    },function (p) {
+        if(!p.numer) {
+            content.innerHTML += p;
+            window.setTimeout(loadTask,100);
+        }
+        else {
+            console.log(p);
+            localStorage.clear();
+            loadLogin(p.description);
+            return;
+        }
+    });
+
+}
+
+function loadTask() {
+    getAllHouse();
+    window.setTimeout(task5_2,30);
+
+}
+
+function loadUserInfo(){
+
+    if(!localStorage.getItem('accessToken')){
         loadLogin();
+        return;
+    }
+    var object = {
+        accessToken: localStorage.getItem('accessToken')
+    };
+
+    object = JSON.stringify(object);
+
+
+    navigation();
+    var content = document.getElementById('content');
+    content.innerHTML = "";
+    VT.send('POST','getUserInfo',[object],function (p) {
+        localStorage.clear();
+        loadLogin(p.description);
+        return;
+    },function (p) {
+        if(!p.numer) {
+            content.innerHTML += p;
+            window.setTimeout(setUserData,100);
+        }
+        else {
+            localStorage.clear();
+
+            loadLogin(p.description);
+            return;
+        }
+    });
+}
+
+
+
+function loadAdministration(){
+
+    if(!localStorage.getItem('accessToken')){
+        loadLogin();
+        return;
+    }
+    var object = {
+        accessToken: localStorage.getItem('accessToken')
+    };
+
+    object = JSON.stringify(object);
+
+    navigation();
+    var content = document.getElementById('content');
+    content.innerHTML = "";
+    VT.send('POST','getAdministration',[object],function (p) {
+        localStorage.clear();
+        loadLogin(p.description);
         return;
     },function (p) {
         if(!p.numer) {
@@ -145,7 +168,7 @@ function loadAdministration(){
             window.setTimeout(getUsers,100);
         }
         else {
-            console.log(p);
+            localStorage.clear();
             loadLogin(p.description);
             return;
         }
@@ -178,25 +201,6 @@ function navigation(){
 function logOut() {
     localStorage.clear();
     loadLogin();
-}
-
-function checkAccessToken(){
-
-    var token = localStorage.getItem('accessToken');
-    if(!token) return;
-
-    var obj ={accessToken: token};
-    obj = JSON.stringify(obj);
-
-    VT.send('POST','/checkToken',[obj],function (e) {
-        console.log(e);
-    },function (p) {
-        console.log(p);
-        if(p.numer =="-1") {
-            localStorage.clear();
-            //console.log(localStorage);
-        }
-});
 }
 
 if(localStorage.getItem('accessToken')){

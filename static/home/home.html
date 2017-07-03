@@ -1,26 +1,46 @@
 <div class="col-md-6 col-md-offset-3 home-page">
     <h2>Редкатирование домов:</h2>
     <div class="row">
+        <div class="row">
             <label>Дома:</label>
             <select id="task5" onchange="task5_2()" class="form-control">
             </select>
             <br>
+            <button onclick="deleteHouse()" class="btn btn-default col-md-3">Удалить</button>
+        </div>
+        <br>
+        <div class="row">
             <label>Изменить название:</label>
             <br>
             <input type="text" id="homeName" class="form-control" oninput="removeErrorRoom('#homeName')">
-            <button onclick="task5_3()" class="btn btn-default col-md-3">Обновить</button>
-
+            <button onclick="changeHouseName()" class="btn btn-default col-md-3">Обновить</button>
+        </div>
+            <br>
+        <div class="row">
+            <label>Добавить новый дом:</label>
+            <br>
+            <input type="text" id="newHome" class="form-control" oninput="removeErrorRoom('#newHome')">
+            <button onclick="addHome()" class="btn btn-default col-md-3">Добавить</button>
+        </div>
     </div>
     <div class="row">
+        <div class="row">
             <label>Комнаты</label>
             <select id="rooms" onchange="onRoomChange()" class="form-control">
             </select>
-            <br>
+        </div>
+        <br>
+        <div class="row">
             <label>Изменить название:</label>
             <br>
-
             <input type="text" id="roomName" class="form-control col-md-3" oninput="removeErrorRoom('#roomName')">
             <button onclick="changeRoomName()" class="btn btn-default col-md-3">Обновить</button>
-
+        </div>
+        <div class="row">
+            <label>Добавить новую комнату:</label>
+            <br>
+            <input type="text" id="newRoom" class="form-control" oninput="removeErrorRoom('#newRoom')">
+            <button onclick="" class="btn btn-default col-md-3">Добавить</button>
+        </div>
     </div>
 </div>

@@ -17,10 +17,8 @@ function addTr(val){
 
 function getUsers(){
     document.getElementById('tabl').innerHTML ="";
-    var token = localStorage.getItem('accessToken');
-
     var obj = {
-        token:token
+        accessToken: localStorage.getItem('accessToken')
     }
     obj = JSON.stringify(obj);
 
@@ -28,7 +26,11 @@ function getUsers(){
         console.log(e);
     },function (p) {
         console.log(p);
-        if(p.numer == '-1') return loadLogin();
+        if(p.numer == '-1') {
+            localStorage.clear();
+            loadLogin();
+            return;
+        }
         for(var i = 0; i < p.length; i++) {
             p[i].button = "<button onclick=\"deliteUser('" + p[i].login + "')\">Удалить</button>";
             addTr(p[i])
@@ -43,6 +45,7 @@ function confirmDelite(login){
 
 function deliteUser(login) {
     //console.log(login);
+
     if(!confirmDelite(login)) return false;
     var object = {
         accessToken: localStorage.getItem('accessToken'),
