@@ -3,7 +3,7 @@ var User = require("../modules/user");
 function updateUserInfo(request,reponse) {
 
     var json = request.body;
-    // json = JSON.parse(json);
+
     var login = request.login;
     var _id = request._id;
 
@@ -36,7 +36,7 @@ function updateUserInfo(request,reponse) {
 function updatePassword(request,reponse){
 
     var json = request.body;
-    json = JSON.parse(json);
+
     var _id = request._id;
 
     User.findOneAndUpdate({"_id": _id},{"$set":{"password":json.password}}).exec(function(err, user){

@@ -25,9 +25,8 @@ function userLogin(){
 
     if(!validateLogin()) return false;
     var obj = getObjectLogin();
-    obj = JSON.stringify(obj);
 
-    VT.send('POST','/login',[obj], function (e) {
+    VT.send('POST','/login',obj, function (e) {
         console.log(e);
     },function (p) {
 

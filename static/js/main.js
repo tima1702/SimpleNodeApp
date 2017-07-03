@@ -79,17 +79,14 @@ function loadUserInfo(){
         loadLogin();
         return;
     }
-    var object = {
+    var obj= {
         accessToken: localStorage.getItem('accessToken')
     };
-
-    object = JSON.stringify(object);
-
 
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";
-    VT.send('POST','getUserInfo',[object],function (p) {
+    VT.send('POST','getUserInfo',obj,function (p) {
         localStorage.clear();
         loadLogin(p.description);
         return;
@@ -115,16 +112,18 @@ function loadAdministration(){
         loadLogin();
         return;
     }
-    var object = {
+    var obj= {
         accessToken: localStorage.getItem('accessToken')
     };
 
-    object = JSON.stringify(object);
+
 
     navigation();
+
     var content = document.getElementById('content');
     content.innerHTML = "";
-    VT.send('POST','getAdministration',[object],function (p) {
+
+    VT.send('POST','getAdministration',obj,function (p) {
         localStorage.clear();
         loadLogin(p.description);
         return;

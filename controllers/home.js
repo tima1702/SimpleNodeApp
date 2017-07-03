@@ -15,7 +15,7 @@ function getAllHouses(request,reponse) {
 function addHouses(request,reponse) {
     var user = request._id;
     var json = request.body;
-    json = JSON.parse(json);
+
 
     var obj = {
         name: json.name,
@@ -39,7 +39,7 @@ function addHouses(request,reponse) {
 function updateHouses(request,reponse) {
     var user = request._id;
     var json = request.body;
-    json = JSON.parse(json);
+
     Home.findOneAndUpdate({"_id": json._id,"user":user},{"$set":{"name":json.name}}).exec(function(err){
         if(err) reponse.send({
             numer:"-1",
@@ -56,7 +56,7 @@ function deleteHouses(request,reponse) {
 
     var user = request._id;
     var json = request.body;
-    json = JSON.parse(json);
+
 
     Home.remove({_id:json._id,user:user},function (err) {
         if (err) return reponse.send({

@@ -83,15 +83,12 @@ function changePassword(){
     var password = document.getElementById('inputPassword').value;
     password = password.hashCode();
 
-    var object = {
+    var obj= {
         accessToken: localStorage.getItem('accessToken'),
         password: password
     };
 
-    object = JSON.stringify(object);
-    console.log(object);
-
-    VT.send('POST','/updatePassword',[object],function (e) {
+    VT.send('POST','/updatePassword',obj,function (e) {
         console.log(e);
     },function (p) {
         if(p.numer == "-1"){

@@ -15,13 +15,13 @@ function addHome() {
 
     VT.removeClass('#newHome','error-room');
 
-    var object = {
+    var obj = {
         accessToken: localStorage.getItem('accessToken'),
         name: str
     };
 
-    object = JSON.stringify(object);
-    VT.send('POST', '/addNewHouse', [object], function (e) {
+
+    VT.send('POST', '/addNewHouse', obj, function (e) {
         console.log(e);
     }, function (p) {
         if(p.numer == "-1") {
@@ -43,17 +43,15 @@ function loadHomes(){
         loadLogin();
         return;
     }
-    var object = {
+    var obj = {
         accessToken: localStorage.getItem('accessToken')
     };
 
-    object = JSON.stringify(object);
-    console.log(object);
 
     navigation();
     var content = document.getElementById('content');
     content.innerHTML = "";
-    VT.send('POST','getHouses',[object],function (p) {
+    VT.send('POST','getHouses',obj,function (p) {
         console.log(p);
         localStorage.clear();
         loadLogin(p.description);
@@ -75,11 +73,11 @@ function loadHomes(){
 
 function getAllHouse() {
     document.getElementById('task5').innerHTML = "";
-    var object = {
+    var obj = {
         accessToken: localStorage.getItem('accessToken')
     };
-    object = JSON.stringify(object);
-    VT.send('POST', '/getAllHouse', [object], function (e) {
+
+    VT.send('POST', '/getAllHouse', obj, function (e) {
         console.log(e);
     }, function (p) {
         if(p.numer == "-1") {
@@ -125,8 +123,7 @@ function changeHouseName(){
         name: document.getElementById('homeName').value
     };
 
-    obj = JSON.stringify(obj);
-    VT.send('POST', '/changeHomeName', [obj], function (e) {
+    VT.send('POST', '/changeHomeName', obj, function (e) {
         console.log(e);
     }, function (p) {
         if(p.numer == "-1") {
@@ -148,8 +145,8 @@ function deleteHouse() {
         accessToken: localStorage.getItem('accessToken'),
         _id:id
     };
-    obj = JSON.stringify(obj);
-    VT.send('POST', '/deleteHouse', [obj], function (e) {
+
+    VT.send('POST', '/deleteHouse', obj, function (e) {
         console.log(e);
     }, function (p) {
         if(p.numer == "-1") {
@@ -219,8 +216,8 @@ function roomSelector(){
         accessToken: localStorage.getItem('accessToken'),
         home: i
     };
-    object = JSON.stringify(object);
-    VT.send('POST', '/getAllRooms', [object], function (e) {
+
+    VT.send('POST', '/getAllRooms', object, function (e) {
         console.log(e);
     }, function (p) {
         if(p.numer == "-1"){
@@ -259,8 +256,8 @@ function newRoom() {
         home:home
     };
 
-    object = JSON.stringify(object);
-    VT.send('POST', '/addRoom', [object], function (e) {
+
+    VT.send('POST', '/addRoom', object, function (e) {
         console.log(e);
     }, function (p) {
         if(p.numer == "-1") {
@@ -289,8 +286,8 @@ function deleteRoom() {
     };
     console.log(object);
 
-    object = JSON.stringify(object);
-    VT.send('POST', '/deleteRoom', [object], function (e) {
+
+    VT.send('POST', '/deleteRoom', object, function (e) {
         console.log(e);
     }, function (p) {
         if(p.numer == "-1") {
@@ -320,17 +317,14 @@ function changeRoomName(){
 
     VT.removeClass('#roomName','error-room');
 
-    var object = {
+    var obj = {
         accessToken: localStorage.getItem('accessToken'),
         name: str,
         home: home,
         _id: _id
     };
 
-    object = JSON.stringify(object);
-
-    console.log(object);
-    VT.send('POST', '/changeNameRoom', [object], function (e) {
+    VT.send('POST', '/changeNameRoom', obj, function (e) {
         console.log(e);
     }, function (p) {
         if(p.numer == "-1") {

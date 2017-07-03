@@ -12,7 +12,7 @@ function registration(request, response) {
         return response.sendStatus(400);
     }
     var json = request.body;
-    json = JSON.parse(json);
+
 
     User.find({login: json.login}, function (err,user) {
         if (err) {
@@ -44,7 +44,7 @@ function login(request,reponse){
         return response.sendStatus(400);
     }
     var json = request.body;
-    json = JSON.parse(json);
+
     console.log(json);
     User.find({login: json.login, password: json.password},function (err,users){
         if(err) {
@@ -75,7 +75,6 @@ function middleCheckToken(request,reponse,next){
     }
     var json = request.body;
     //console.log(json);
-    // json = JSON.parse(json);
 
     var token = json.accessToken;
     var login = "";

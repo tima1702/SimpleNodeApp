@@ -3,7 +3,7 @@ var Room = require("../modules/room");
 function getAllRoom(request,reponse) {
 
     var json = request.body;
-    json = JSON.parse(json);
+
 
     var home= json.home;
     Room.find({home:home},function (err,rooms) {
@@ -17,8 +17,7 @@ function getAllRoom(request,reponse) {
 
 function addRoom(request,reponse) {
     var json = request.body;
-    json = JSON.parse(json);
-    console.log(json);
+
     var obj = {
         name: json.name,
         home: json.home
@@ -41,7 +40,6 @@ function addRoom(request,reponse) {
 function updateRoom(request,reponse) {
 
     var json = request.body;
-    json = JSON.parse(json);
 
     Room.findOneAndUpdate({"_id": json._id,"home":json.home},{"$set":{"name":json.name}}).exec(function(err){
         if(err) reponse.send({
@@ -58,7 +56,7 @@ function updateRoom(request,reponse) {
 function deleteRoom(request,reponse) {
 
     var json = request.body;
-    json = JSON.parse(json);
+
     console.log(json);
     Room.remove({_id:json._id, home:json.home},function (err) {
         if (err) return reponse.send({

@@ -2,9 +2,8 @@ function registration(form){
 
     if(!validateRegistration()) return false;
     var obj=getObjectRegistration();
-    var serialObj =JSON.stringify(obj);
 
-    VT.send('POST','/register',[serialObj], function (e) {
+    VT.send('POST','/register',obj, function (e) {
         console.log(e);
     },function (p) {
         //console.log(p);

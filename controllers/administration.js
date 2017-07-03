@@ -13,7 +13,7 @@ function getAllUser(request,reponse){
 function deleteUser(request,reponse){
 
     var json = request.body;
-    json = JSON.parse(json);
+
     var login = request.login;
 
     User.remove({login:json.login},function (err) {

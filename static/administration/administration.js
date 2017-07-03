@@ -20,12 +20,11 @@ function getUsers(){
     var obj = {
         accessToken: localStorage.getItem('accessToken')
     }
-    obj = JSON.stringify(obj);
 
-    VT.send('POST','/getAllUser',[obj],function (e) {
+    VT.send('POST','/getAllUser',obj,function (e) {
         console.log(e);
     },function (p) {
-        //console.log(p);
+
         if(p.numer == '-1') {
             localStorage.clear();
             loadLogin();
@@ -47,13 +46,12 @@ function deliteUser(login) {
     //console.log(login);
 
     if(!confirmDelite(login)) return false;
-    var object = {
+    var obj = {
         accessToken: localStorage.getItem('accessToken'),
         login: login
     };
 
-    object = JSON.stringify(object);
-    VT.send('POST','/deleteUser',[object],function (e) {
+    VT.send('POST','/deleteUser',obj,function (e) {
         console.log(e);
     },function (p) {
         //console.log(p);
@@ -64,7 +62,7 @@ function deliteUser(login) {
             return;
         }
         if(p.numer == "1"){
-            //console.log(p.description);
+
             getUsers();
         }
     });
