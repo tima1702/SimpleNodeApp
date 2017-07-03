@@ -34,15 +34,15 @@ function updateSession(object){
 }
 
 function changeAll(){
-    var object = getInfoObj();
+    var obj = getInfoObj();
 
-    if(!validInfo(object)) return false;
+    if(!validInfo(obj)) return false;
 
-    updateSession(object);
+    updateSession(obj);
 
-    object = JSON.stringify(localStorage);
+    obj = localStorage;
 
-    VT.send('POST','/updateUserInfo',[object], function (e) {
+    VT.send('POST','/updateUserInfo',obj, function (e) {
         console.log(e);
     },function (p) {
         console.log(p);

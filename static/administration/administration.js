@@ -53,7 +53,7 @@ function deliteUser(login) {
     };
 
     object = JSON.stringify(object);
-    VT.send('POST','/deliteUser',[object],function (e) {
+    VT.send('POST','/deleteUser',[object],function (e) {
         console.log(e);
     },function (p) {
         //console.log(p);

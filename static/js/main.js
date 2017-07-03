@@ -65,41 +65,7 @@ function loadRegistration(){
         });
 }
 
-function loadHomes(){
 
-    if(!localStorage.getItem('accessToken')){
-        loadLogin();
-        return;
-    }
-    var object = {
-        accessToken: localStorage.getItem('accessToken')
-    };
-
-    object = JSON.stringify(object);
-    console.log(object);
-
-    navigation();
-    var content = document.getElementById('content');
-    content.innerHTML = "";
-    VT.send('POST','getHouses',[object],function (p) {
-        console.log(p);
-        localStorage.clear();
-        loadLogin(p.description);
-        return;
-    },function (p) {
-        if(!p.numer) {
-            content.innerHTML += p;
-            window.setTimeout(loadTask,100);
-        }
-        else {
-            console.log(p);
-            localStorage.clear();
-            loadLogin(p.description);
-            return;
-        }
-    });
-
-}
 
 function loadTask() {
     getAllHouse();
