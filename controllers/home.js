@@ -24,15 +24,12 @@ function addHouses(request,reponse) {
 
     var newHome = new Home(obj);
 
-    newHome.save(function (error){
+    newHome.save(function (error,home){
         if(error) reponse.send({
             numer:-1,
             description:error
         });
-        else reponse.send({
-            numer:1,
-            description:"Дом добавлен!"
-        });
+        else reponse.send(home);
     });
 }
 
@@ -58,7 +55,7 @@ function deleteHouses(request,reponse) {
     var json = request.body;
 
 
-    Home.remove({_id:json._id,user:user},function (err) {
+    Home.remove({_id:json._id,user:user},function (err,post) {
         if (err) return reponse.send({
             numer: "-1",
             description: err

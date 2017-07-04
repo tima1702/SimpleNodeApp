@@ -8,6 +8,7 @@ var homeShema = new Schema({
 });
 
 homeShema.post('remove',function (doc) {
+    console.log("Удаление:");
 });
 
 var Home = mongoose.model('Home',homeShema);

@@ -1,10 +1,3 @@
-function task5_1(){
-    var homeNames = getHomeNames();
-    for(var i = 0; i < homeNames.length; i++){
-        task3(homeNames[i],'#task5', i);
-    }
-}
-
 function addHome() {
     var str = document.getElementById('newHome').value;
 
@@ -32,7 +25,11 @@ function addHome() {
         } else{
             console.log(p);
             document.getElementById('newHome').value = "";
-            loadTask();
+            task3(p.name, "#task5",p._id);
+            //loadTask();
+            removeDisabledHome();
+            addDisabledRoom();
+            task5_2();
         }
     });
 }
@@ -48,7 +45,7 @@ function loadHomes(){
     };
 
 
-    navigation();
+    navigation("#nav-home");
     var content = document.getElementById('content');
     content.innerHTML = "";
     VT.send('POST','getHouses',obj,function (p) {
@@ -132,8 +129,9 @@ function changeHouseName(){
             loadLogin(p.description);
             return;
         } else{
-            document.getElementById('task5').innerHTML = "";
-            loadTask();
+            //document.getElementById('task5').innerHTML = "";
+            changeOptions(select,obj.name,obj._id);
+            //loadTask();
         }
     });
 }
@@ -155,7 +153,15 @@ function deleteHouse() {
             loadLogin(p.description);
             return;
         } else{
-            loadTask();
+            deleteOption(select,obj._id);
+            if(select.length == 0){
+                resetRoom();
+                addDisabledHome();
+                document.getElementById('homeName').value ="";
+            } else {
+                task5_2();
+            }
+            //loadTask();
         }
     });
 }
@@ -194,6 +200,21 @@ function getSelectOptionsValue(select) {
     }
     return result;
 }
+
+function changeOptions(select,str,_id){
+    for(var i = 0; i < select.length; i++){
+        var option = select.options[i];
+        if(option.value == _id) {option.innerHTML = str; return;}
+    }
+}
+
+function deleteOption(select,_id) {
+    for(var i = 0; i < select.length; i++){
+        var option = select.options[i];
+        if(option.value == _id) {option.remove(); return;}
+    }
+}
+
 
 function task3(str, query, value){
     var option = '<option value="'+value +'">' + str +'</option>';
@@ -266,9 +287,13 @@ function newRoom() {
             loadLogin(p.description);
             return;
         } else{
-            console.log(p);
+            //console.log(p);
             document.getElementById('newRoom').value = "";
-            loadTask();
+            task3(p.name, "#rooms",p._id);
+            //loadTask();
+            removeDisabledRoom();
+            onRoomChange();
+
         }
     });
 }
@@ -279,15 +304,15 @@ function deleteRoom() {
     select = document.getElementById('rooms');
     var _id = getSelectOptionsValue(select);
 
-    var object = {
+    var obj= {
         accessToken: localStorage.getItem('accessToken'),
         _id: _id,
         home: home
     };
-    console.log(object);
+    //console.log(object);
 
 
-    VT.send('POST', '/deleteRoom', object, function (e) {
+    VT.send('POST', '/deleteRoom', obj, function (e) {
         console.log(e);
     }, function (p) {
         if(p.numer == "-1") {
@@ -296,7 +321,10 @@ function deleteRoom() {
             loadLogin(p.description);
             return;
         } else{
-            roomSelector();
+            //roomSelector();
+            deleteOption(select,obj._id);
+            if(select.length == 0){addDisabledRoom();}
+            onRoomChange();
         }
     });
 
@@ -334,7 +362,8 @@ function changeRoomName(){
             return;
         } else{
             document.getElementById('roomName').innerHTML = "";
-            roomSelector();
+            changeOptions(select,obj.name,obj._id);
+            //roomSelector();
         }
     });
 }
@@ -407,4 +436,9 @@ function removeDisabledRoom() {
     VT.removeParam('#roomName','disabled','disabled');
     VT.removeParam('#upRoom','disabled','disabled');
     VT.removeParam('#delRoom','disabled','disabled');
+}
+
+function resetRoom(){
+    document.getElementById('rooms').innerHTML="";
+    document.getElementById('roomName').value="";
 }

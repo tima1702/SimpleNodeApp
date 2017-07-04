@@ -25,15 +25,12 @@ function addRoom(request,reponse) {
 
     var newRoom = new Room(obj);
 
-    newRoom.save(function (error){
+    newRoom.save(function (error,room){
         if(error) reponse.send({
             numer:-1,
             description:error
         });
-        else reponse.send({
-            numer:1,
-            description:"Комната добавлена!"
-        });
+        else reponse.send(room);
     });
 }
 

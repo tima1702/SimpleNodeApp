@@ -79,7 +79,7 @@ function middleCheckToken(request,reponse,next){
     var token = json.accessToken;
     var login = "";
     var _id ="";
-    console.log(token);
+    //  console.log(token);
     var decoded = jwt.decode(token);
 
     if(decoded == null) return reponse.send({
@@ -88,7 +88,7 @@ function middleCheckToken(request,reponse,next){
     });
     var exp = Math.floor(Date.now() / 1000) + (60);
 
-    console.log("Exp:",decoded.exp," : ",exp);
+    //console.log("Exp:",decoded.exp," : ",exp);
 
     if ((exp - decoded.exp) > tokenEpired) return reponse.send({
         numer: "-1",

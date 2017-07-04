@@ -29,7 +29,7 @@ function loadLogin(helpMessage){
         return;
     }
 
-    navigation();
+    navigation("#nav-log");
     var content = document.getElementById('content');
     content.innerHTML = "";
     VT.send('POST','getLogin',[],function (p){
@@ -48,13 +48,12 @@ function writeHelpMessage(helpMessage){
 
 function loadRegistration(){
 
-
     if(localStorage.getItem('accessToken')){
         loadUserInfo();
         return;
     }
 
-    navigation();
+    navigation("#nav-reg");
     var content = document.getElementById('content');
     content.innerHTML = "";
     VT.send('POST','getRegistration',[],function (p){
@@ -83,7 +82,7 @@ function loadUserInfo(){
         accessToken: localStorage.getItem('accessToken')
     };
 
-    navigation();
+    navigation("#nav-inf");
     var content = document.getElementById('content');
     content.innerHTML = "";
     VT.send('POST','getUserInfo',obj,function (p) {
@@ -118,7 +117,7 @@ function loadAdministration(){
 
 
 
-    navigation();
+    navigation("#nav-adm");
 
     var content = document.getElementById('content');
     content.innerHTML = "";
@@ -144,7 +143,10 @@ function hideErr(query){
     VT.removeClass(query, "error");
 }
 
-function navigation(){
+
+function navigation(query){
+    VT.removeClass(".selected","selected");
+    VT.addClass(query,"selected");
 
     if(localStorage.getItem('accessToken')){
         VT.addClass('#nav-reg','hide');
