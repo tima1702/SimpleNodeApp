@@ -165,6 +165,43 @@ function navigation(query){
     }
 }
 
+function addProgress(){
+    var progressBar = document.getElementById('progress-bar');
+
+    var procent = getProgress();
+
+
+    if(procent == 100) return 100;
+    procent += 5;
+
+    var str = "" + procent + "%";
+
+    progressBar.style.width = str;
+    return procent;
+}
+
+function getProgress(){
+    var progressBar = document.getElementById('progress-bar');
+    var procent = progressBar.style.width;
+    procent = procent.slice(0, -1);
+    procent = Number(procent);
+    return procent;
+}
+
+
+
+function loadProgress(num){
+    if(num < getProgress()) return false;
+    while(num > getProgress()){
+        window.setTimeout(addProgress,1);
+    }
+    return true;
+}
+
+function closeProgress(){
+
+}
+
 function logOut() {
     localStorage.clear();
     loadLogin();

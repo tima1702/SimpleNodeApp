@@ -30,25 +30,26 @@ function getUsers(){
             loadLogin();
             return;
         }
-        for(var i = 0; i < p.length; i++) {
-            p[i].button = "<button onclick=\"deliteUser('" + p[i].login + "')\">Удалить</button>";
+        {
+            for(var i = 0; i < p.length; i++) {
+            p[i].button = "<button onclick=\"deliteUser('" + p[i]._id + "','" + p[i].login +"')\">Delete</button>";
             addTr(p[i])
-        };
+        };}
     });
 }
 
 function confirmDelite(login){
-    if(confirm("Вы подтверждаете удаление ",login,"?"))return true;
+    if(confirm("Your confirm delete " + login + "?"))return true;
     else return false;
 }
 
-function deliteUser(login) {
+function deliteUser(id,login) {
     //console.log(login);
 
     if(!confirmDelite(login)) return false;
     var obj = {
         accessToken: localStorage.getItem('accessToken'),
-        login: login
+        deleteLogin: id
     };
 
     VT.send('POST','/deleteUser',obj,function (e) {
@@ -60,10 +61,21 @@ function deliteUser(login) {
             localStorage.clear();
             loadLogin(p.description);
             return;
-        }
-        if(p.numer == "1"){
-
-            getUsers();
+        }else {
+            console.log(p);
+            deleteTr(login);
         }
     });
+}
+
+function deleteTr(login){
+    var table = document.getElementById('tabl');
+    var trs = table.rows;
+
+    for(var i=0; i<trs.length; i++){
+        if(trs[i].cells[0].innerText == login){
+            table.deleteRow(i);
+            return;
+        }
+    }
 }

@@ -4,6 +4,7 @@ function getInfoObj(){
     object.email = document.getElementById('inputEmail').value;
     object.age = document.getElementById('age').value;
     object.name = document.getElementById('firstName').value;
+    object.accessToken = localStorage.getItem('accessToken');
 
     return object;
 }
@@ -38,10 +39,6 @@ function changeAll(){
 
     if(!validInfo(obj)) return false;
 
-    updateSession(obj);
-
-    obj = localStorage;
-
     VT.send('POST','/updateUserInfo',obj, function (e) {
         console.log(e);
     },function (p) {
@@ -49,12 +46,10 @@ function changeAll(){
         if(p.numer == "-1"){
             localStorage.clear();
             return loadLogin(p.description);
+        }else{
+            updateSession(obj);
+            setUserData();
         }
-        var userInfo = p[0];
-
-        for(var key in userInfo) localStorage.setItem(key,userInfo[key]);
-
-        setUserData();
         //alert("Данные обновлены");
     });
 }

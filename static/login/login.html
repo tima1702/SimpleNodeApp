@@ -1,26 +1,26 @@
 <div class="col-md-6 col-md-offset-3">
-    <h2>Вход в систему</h2>
+    <h2>Login</h2>
     <p class="description" id="help-message"></p>
     <div class="form-horizontal" id="form-login">
         <form>
         <div class="form-group">
-            <label class="control-label col-xs-3" for="login">Логин:</label>
+            <label class="control-label col-xs-3" for="login">Login:</label>
             <div class="col-xs-9">
-                    <input type="text" class="form-control" id="login" placeholder="Введите логин" oninput="hideErr('.help-login')" required>
-                <label class="help-login ">Не верный логин!</label>
+                    <input type="text" class="form-control" id="login" placeholder="Enter login" oninput="hideErr('.help-login')" required>
+                <label class="help-login ">Invalid login!</label>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-xs-3" for="inputPassword">Пароль:</label>
+            <label class="control-label col-xs-3" for="inputPassword">Password:</label>
             <div class="col-xs-9">
-                <input type="password" class="form-control" id="inputPassword" placeholder="Введите пароль" oninput="hideErr('.help-password')"required>
-                <label class="help-password ">Введен не корректный пароль!</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Enter password" oninput="hideErr('.help-password')"required>
+                <label class="help-password ">Invalid password!</label>
             </div>
         </div>
         <div class="form-group">
             <div class="col-xs-offset-3 col-xs-9">
-                <input type="button" class="btn btn-primary" value="Вход" onclick="userLogin()">
-                <input type="reset" class="btn btn-default" value="Очистить форму">
+                <input type="button" class="btn btn-primary" value="Login" onclick="userLogin()">
+                <input type="reset" class="btn btn-default" value="Reset form">
             </div>
         </div>
         </form>

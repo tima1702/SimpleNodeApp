@@ -1,48 +1,48 @@
 <div class="col-md-6 col-md-offset-3 home-page">
-    <h2>Редкатирование домов:</h2>
+    <h2>Editing houses:</h2>
     <div class="row">
         <div class="row">
-            <label>Дома:</label>
+            <label>Houses:</label>
             <select id="task5" onchange="task5_2()" class="form-control">
             </select>
             <br>
-            <button onclick="deleteHouse()" class="btn btn-default col-md-3" id="delHome">Удалить</button>
+            <button onclick="deleteHouse()" class="btn btn-default col-md-3" id="delHome">Delete</button>
         </div>
         <br>
         <div class="row">
-            <label>Изменить название:</label>
+            <label>Change house name:</label>
             <br>
             <input type="text" id="homeName" class="form-control" oninput="removeErrorRoom('#homeName')">
-            <button onclick="changeHouseName()" class="btn btn-default col-md-3" id="upHome">Обновить</button>
+            <button onclick="changeHouseName()" class="btn btn-default col-md-3" id="upHome">Change</button>
         </div>
             <br>
         <div class="row">
-            <label>Добавить новый дом:</label>
+            <label>Add new house:</label>
             <br>
             <input type="text" id="newHome" class="form-control" oninput="removeErrorRoom('#newHome')">
-            <button onclick="addHome()" class="btn btn-default col-md-3">Добавить</button>
+            <button onclick="addHome()" class="btn btn-default col-md-3">Add</button>
         </div>
     </div>
     <div class="row">
         <div class="row">
-            <label>Комнаты</label>
+            <label>Rooms:</label>
             <select id="rooms" onchange="onRoomChange()" class="form-control">
             </select>
             <br>
-            <button onclick="deleteRoom()" class="btn btn-default col-md-3" id="delRoom">Удалить</button>
+            <button onclick="deleteRoom()" class="btn btn-default col-md-3" id="delRoom">Delete</button>
         </div>
         <br>
         <div class="row">
-            <label>Изменить название:</label>
+            <label>Change room name:</label>
             <br>
             <input type="text" id="roomName" class="form-control col-md-3" oninput="removeErrorRoom('#roomName')">
-            <button onclick="changeRoomName()" class="btn btn-default col-md-3" id="upRoom">Обновить</button>
+            <button onclick="changeRoomName()" class="btn btn-default col-md-3" id="upRoom">Change</button>
         </div>
         <div class="row">
-            <label>Добавить новую комнату:</label>
+            <label>Add new room:</label>
             <br>
             <input type="text" id="newRoom" class="form-control" oninput="removeErrorRoom('#newRoom')">
-            <button onclick="newRoom()" class="btn btn-default col-md-3" id="addRoom">Добавить</button>
+            <button onclick="newRoom()" class="btn btn-default col-md-3" id="addRoom">Add</button>
         </div>
     </div>
 </div>

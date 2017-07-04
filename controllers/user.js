@@ -74,8 +74,8 @@ function middleCheckToken(request,reponse,next){
         return response.sendStatus(400);
     }
     var json = request.body;
-    //console.log(json);
-
+    console.log("middle 1",json);
+    console.log("middle 2",request.originalUrl);
     var token = json.accessToken;
     var login = "";
     var _id ="";
@@ -84,23 +84,23 @@ function middleCheckToken(request,reponse,next){
 
     if(decoded == null) return reponse.send({
         numer: "-1",
-        description: "Неверный токен"
+        description: "Invalid token!"
     });
     var exp = Math.floor(Date.now() / 1000) + (60);
-
+    console.log("middle 3");
     //console.log("Exp:",decoded.exp," : ",exp);
 
     if ((exp - decoded.exp) > tokenEpired) return reponse.send({
         numer: "-1",
-        description: "Время действия токена истекло"
+        description: "The token expired"
     })
     else{
         login = decoded.login;
         _id = decoded._id;
     }
-
+    console.log("middle 4");
     User.find({login:login,_id:_id},function (err,users){
-
+        console.log("middle 5");
         if(err) return reponse.send({
             numer: "-1",
             description: err
@@ -108,13 +108,13 @@ function middleCheckToken(request,reponse,next){
 
         if(users.length != 1) return reponse.send({
             numer: "-1",
-            description: "Пользователя с таким токеном не существует"
-        });
+            description: "Invalid token!"
+        }); else {
+            request.login = login;
+            request._id = _id;
+            next();
+        }
     });
-
-    request.login = login;
-    request._id = _id;
-    next();
 }
 
 module.exports = {

@@ -1,48 +1,48 @@
 <div class="col-md-6 col-md-offset-3" >
-<h2>Страница пользователя</h2>
+<h2>User page</h2>
     <div class="row">
-        <label class="control-label col-xs-3" for="firstName">Имя:</label>
+        <label class="control-label col-xs-3" for="firstName">Name:</label>
         <div class="col-xs-9">
-            <input type="text" class="form-control" id="firstName" placeholder="Введите имя" oninput="hideErr('.help-name')">
-            <label class="help-name">Не корректное имя</label>
+            <input type="text" class="form-control" id="firstName" placeholder="Enter name" oninput="hideErr('.help-name')">
+            <label class="help-name">Invalid name!</label>
         </div>
     </div>
 
     <div class="row">
-        <label class="control-label col-xs-3" for="age">Возраст:</label>
+        <label class="control-label col-xs-3" for="age">Age:</label>
         <div class="col-xs-9">
-            <input type="number" class="form-control" id="age" placeholder="Введите свой возраст" oninput="hideErr('.help-age')">
-            <label class="help-age">Не корректный возраст</label>
+            <input type="number" class="form-control" id="age" placeholder="Enter your age" oninput="hideErr('.help-age')">
+            <label class="help-age">Invalid age!</label>
         </div>
     </div>
     <div class="row">
         <label class="control-label col-xs-3" for="inputEmail">Email:</label>
         <div class="col-xs-9">
             <input type="email" class="form-control" id="inputEmail" placeholder="Email" required oninput="hideErr('.help-email')">
-            <label class="help-email ">Не корректный email!</label>
+            <label class="help-email ">Invalid email!</label>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-offset-3 col-xs-9">
-            <input type="button" class="btn btn-primary" value="Изменить" onclick="changeAll()">
+            <input type="button" class="btn btn-primary" value="Change" onclick="changeAll()">
         </div>
     </div>
     <div class="row">
-        <h4>Изменение пароля</h4>
-        <label class="control-label col-xs-3" for="inputPassword">Пароль:</label>
+        <h4>Change password</h4>
+        <label class="control-label col-xs-3" for="inputPassword">Password:</label>
         <div class="col-xs-9">
-            <input type="password" class="form-control" id="inputPassword" placeholder="Введите пароль" oninput="hideErr('.help-password')">
-            <label class="help-password ">Введен не корректный пароль!</label>
+            <input type="password" class="form-control" id="inputPassword" placeholder="Enter password" oninput="hideErr('.help-password')">
+            <label class="help-password ">Invalid password!</label>
         </div>
 
-        <label class="control-label col-xs-3" for="confirmPassword">Подтвердите пароль:</label>
+        <label class="control-label col-xs-3" for="confirmPassword">Confirm password:</label>
         <div class="col-xs-9">
-            <input type="password" class="form-control" id="confirmPassword" placeholder="Введите пароль ещё раз" required>
+            <input type="password" class="form-control" id="confirmPassword" placeholder="Enter password" required>
             <label></label>
         </div>
 
         <div class="col-xs-offset-3 col-xs-9">
-            <input type="button" class="btn btn-primary" value="Изменить Пароль" onclick="changePassword()">
+            <input type="button" class="btn btn-primary" value="Change Password" onclick="changePassword()">
         </div>
     </div>
 </div>

@@ -2,7 +2,7 @@ var User = require("../modules/user");
 
 function getAllUser(request,reponse){
 
-    User.find({},'name age login email',function (err,users) {
+    User.find({},'name age login email _id',function (err,users) {
         if (err) return reponse.send({
             numer: "-1",
             description: err
@@ -13,21 +13,40 @@ function getAllUser(request,reponse){
 function deleteUser(request,reponse){
 
     var json = request.body;
+    console.log(json);
 
     var login = request.login;
 
-    User.remove({login:json.login},function (err) {
+    var newUser = new User({
+        _id: json.deleteLogin
+    });
+    console.log('123');
+    /*User.remove({"_id":json.deleteLogin},function (err) {
         if(err) return reponse.send({
             numer:"-1",
             description:err
         });
-        if(json.login == login) return reponse.send({
+        if(json.deleteLogin == request._id) return reponse.send({
             numer:"2",
             description: "Ваши данные удалены!"
         });
         return reponse.send({
             numer:"1",
             description: "Удалили пользователя"
+        });
+    });*/
+    newUser.remove(function (err) {
+        if(err) return reponse.send({
+            numer:"-1",
+            description:err
+        });
+        if(json.deleteLogin == request._id) return reponse.send({
+            numer:"2",
+            description: "User deleted!"
+        });
+        return reponse.send({
+            numer:"1",
+            description: " "
         });
     });
 }

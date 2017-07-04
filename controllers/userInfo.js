@@ -17,19 +17,12 @@ function updateUserInfo(request,reponse) {
         if (err) {
             console.log(err);
             return reponse.sendStatus(400);
+        } else{
+            reponse.send({
+                numer: "1",
+                descriptoin: "User date update"
+            });
         }
-    });
-    User.find({login: login}, function (err, users) {
-        if (err) reponse.send({
-            numer: "-1",
-            descriptoin: err
-        });
-        var user = users[0];
-        reponse.send({
-            'name': user.name,
-            'age': user.age,
-            'email': user.email
-        });
     });
 }
 

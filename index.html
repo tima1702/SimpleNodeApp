@@ -11,15 +11,25 @@
 <div class="container">
 <div class="col-md-12 top-menu center">
     <ul>
-        <li id="nav-reg"><a onclick="loadRegistration()">Регистриция</a></li>
-        <li id="nav-log"><a onclick="loadLogin()">Вход</a></li>
-        <li id="nav-inf"><a onclick="loadUserInfo()" >Редактирование данных</a></li>
-        <li id="nav-home"><a onclick="loadHomes()">Дома и комнаты</a></li>
-        <li id="nav-adm"><a onclick="loadAdministration()">Администрирование</a></li>
-        <li id="nav-out"><a onclick="logOut()" >Выход</a></li>
+        <li id="nav-reg"><a onclick="loadRegistration()">Registration</a></li>
+        <li id="nav-log"><a onclick="loadLogin()">Login</a></li>
+        <li id="nav-inf"><a onclick="loadUserInfo()" >User data</a></li>
+        <li id="nav-home"><a onclick="loadHomes()">Houses and Rooms</a></li>
+        <li id="nav-adm"><a onclick="loadAdministration()">Administration</a></li>
+        <li id="nav-out"><a onclick="logOut()" >Exit</a></li>
     </ul>
 </div>
     <div id="content"></div>
+</div>
+<div class="b-popup" id="popup1">
+    <div class="b-popup-content center">
+        <div class="row title-popup">Title</div>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" id="progress-bar" aria-valuenow="40"
+                 aria-valuemin="10" aria-valuemax="100" style="width:0%">
+            </div>
+        </div>
+    </div>
 </div>
 <script src="static/js/vanilla_tools.js"></script>
 <script src="static/registration/registration.js"></script>

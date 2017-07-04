@@ -9,8 +9,8 @@ function registration(form){
         //console.log(p);
         if(p == "1") {
             //alert("Вы зарегистрированны в системе!");
-            loadLogin("Вы зарегистрированны, теперь можете войти!");
-        } else alert("Пользователь с таким логином зарегистрировался в системе");
+            loadLogin("You are registered, now you can login!");
+        } else alert("A user with such a login has registered in the system!");
     });
     form.reset();
 

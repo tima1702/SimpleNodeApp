@@ -1,9 +1,13 @@
-var Home = require("../modules/home");
+var HomeModel = require("../modules/home");
 var Room = require("../modules/room");
+
+
+var Home = new HomeModel();
+
 
 function getAllHouses(request,reponse) {
     var user = request._id;
-    Home.find({user:user},function (err,houses) {
+    HomeModel.find({user:user},function (err,houses) {
         if(err)return reponse.send({
             numer:"-1",
             description:err
@@ -22,7 +26,7 @@ function addHouses(request,reponse) {
         user: user
     };
 
-    var newHome = new Home(obj);
+    var newHome = new HomeModel(obj);
 
     newHome.save(function (error,home){
         if(error) reponse.send({
@@ -37,7 +41,7 @@ function updateHouses(request,reponse) {
     var user = request._id;
     var json = request.body;
 
-    Home.findOneAndUpdate({"_id": json._id,"user":user},{"$set":{"name":json.name}}).exec(function(err){
+    HomeModel.findOneAndUpdate({"_id": json._id,"user":user},{"$set":{"name":json.name}}).exec(function(err){
         if(err) reponse.send({
             numer:"-1",
             description:err
@@ -54,23 +58,30 @@ function deleteHouses(request,reponse) {
     var user = request._id;
     var json = request.body;
 
+    var newHome = HomeModel({
+        _id:json._id,
+        user:json.user
+    });
 
-    Home.remove({_id:json._id,user:user},function (err,post) {
+    newHome.remove(function (err) {
+        if (err) return reponse.send({
+            numer: "-1",
+            description: err
+        }); else return reponse.send({
+            numer: "1",
+            description: "Дом удален"
+        });
+    });
+    /*Home.remove({_id:json._id,user:user},function (err) {
         if (err) return reponse.send({
             numer: "-1",
             description: err
         });
-    });
-    Room.remove({home:json._id},function (err) {
-        if (err) return reponse.send({
-            numer: "-1",
-            description: err
+        else return reponse.send({
+            numer: "1",
+            description: "Дом удален"
         });
-    });
-    return reponse.send({
-        numer: "1",
-        description: "Дом удален"
-    });
+    });*/
 }
 
 module.exports = {

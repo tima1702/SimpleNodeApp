@@ -153,6 +153,7 @@ function deleteHouse() {
             loadLogin(p.description);
             return;
         } else{
+            console.log(p);
             deleteOption(select,obj._id);
             if(select.length == 0){
                 resetRoom();
