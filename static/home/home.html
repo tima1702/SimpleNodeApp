@@ -6,7 +6,9 @@
             <select id="task5" onchange="task5_2()" class="form-control">
             </select>
             <br>
-            <button onclick="deleteHouse()" class="btn btn-default col-md-3" id="delHome">Delete</button>
+            <button onclick="deleteHouse()" class="btn btn-default col-md-3" id="delHome">
+                <span>Delete</span>
+            </button>
         </div>
         <br>
         <div class="row">
@@ -20,7 +22,7 @@
             <label>Add new house:</label>
             <br>
             <input type="text" id="newHome" class="form-control" oninput="removeErrorRoom('#newHome')">
-            <button onclick="addHome()" class="btn btn-default col-md-3">Add</button>
+            <button onclick="addHome()" class="btn btn-default col-md-3" id="addHome">Add</button>
         </div>
     </div>
     <div class="row">

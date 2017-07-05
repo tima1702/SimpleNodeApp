@@ -1,40 +1,46 @@
-var first = 100;
-var second = 750;
 function addHome() {
-
-    var str = document.getElementById('newHome').value;
 
     if(validNewHome() == false){
         VT.addClass('#newHome','error-room');
         return;
     }
-    openModalWindow("Information about the house is loaded");
+    var str = document.getElementById('newHome').value;
+    str = str.trim();
+    document.getElementById('newHome').value = str;
+    //openModalWindow("Information about the house is loaded");
     VT.removeClass('#newHome','error-room');
 
     var obj = {
         accessToken: localStorage.getItem('accessToken'),
         name: str
     };
-
+    var button = document.getElementById('addHome');
     VT.send('POST', '/addNewHouse', obj, function (e) {
         console.log(e);
-        setTimeout(addProgress,first,50);
-        setTimeout(errModal,second);
+        //setTimeout(addProgress,first,50);
+        //setTimeout(errModal,second);
+        setTimeout(addSpinerGlif,10,button,"Add...");
+        setTimeout(addTimesGlif,400,button,"Error");
+        setTimeout(removeGlif,1000,button,"Add");
+
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            setTimeout(addProgress,first,50);
-            setTimeout(modalTokenError,second, p.description);
+            //setTimeout(addProgress,first,50);
+            //setTimeout(modalTokenError,second, p.description);
             //loadLogin(p.description);
             return;
         } else{
-            setTimeout(addProgress,first,50);
+            //setTimeout(addProgress,first,50);
             console.log(p);
             document.getElementById('newHome').value = "";
             task3(p.name, "#task5",p._id);
             //loadTask();
-            setTimeout(successModal,second,"House added");
+            //setTimeout(successModal,second,"House added");
+            setTimeout(addSpinerGlif,10,button,"Add...");
+            setTimeout(addCheckGlif,400,button,"Success!");
+            setTimeout(removeGlif,1000,button,"Add");
             removeDisabledHome();
             addDisabledRoom();
             task5_2();
@@ -53,7 +59,7 @@ function loadHomes(){
         accessToken: localStorage.getItem('accessToken')
     };
 
-
+    location.has = "#home";
     navigation("#nav-home");
     var content = document.getElementById('content');
     content.innerHTML = "";
@@ -78,22 +84,23 @@ function loadHomes(){
 }
 
 function getAllHouse() {
-    openModalWindow("Loading houses and rooms information");
+    //openModalWindow("Loading houses and rooms information");
     document.getElementById('task5').innerHTML = "";
     var obj = {
         accessToken: localStorage.getItem('accessToken')
     };
     VT.send('POST', '/getAllHouse', obj, function (e) {
         console.log(e);
-        setTimeout(addProgress,first,50);
-        setTimeout(modalError,second,50);
+      //  setTimeout(addProgress,first,50);
+      //  setTimeout(modalError,second,50);
+
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            setTimeout(addProgress,first,50);
-            setTimeout(modalTokenError,second,p.description);
-            //loadLogin(p.description);
+        //    setTimeout(addProgress,first,50);
+          //  setTimeout(modalTokenError,second,p.description);
+            loadLogin(p.description);
             return;
         } else{
             for(var i = 0; i < p.length; i++){
@@ -101,8 +108,9 @@ function getAllHouse() {
             }
             if(p.length == 0) addDisabledHome();
             else removeDisabledHome();
-            setTimeout(addProgress,first,50);
-            setTimeout(successModal,second,"Information uploaded");
+
+            //setTimeout(addProgress,first,50);
+            //setTimeout(successModal,second,"Information uploaded");
         }
     });
 }
@@ -114,7 +122,7 @@ function task5_2(){
     document.getElementById('homeName').value = str;
     console.log(str);
     //input.value = str;
-    roomSelector();
+    setTimeout(roomSelector,20);
     //onRoomChange();
 }
 
@@ -127,70 +135,92 @@ function changeHouseName(){
         return;
     }
 
+    var str = document.getElementById('homeName').value;
+    str = str.trim();
+
     VT.removeClass('#homeName','error-room');
-    openModalWindow("Change name...");
+    //openModalWindow("Change name...");
     var obj = {
         accessToken: localStorage.getItem('accessToken'),
         _id:id,
-        name: document.getElementById('homeName').value
+        name: str
     };
 
+
+
+    var button = document.getElementById('upHome');
     VT.send('POST', '/changeHomeName', obj, function (e) {
         console.log(e);
-        setTimeout(addProgress,first,50);
-        setTimeout(modalError,second);
+        setTimeout(addSpinerGlif,10,button,"Change...");
+        setTimeout(addTimesGlif,400,button,"Error");
+        setTimeout(removeGlif,1000,button,"Change");
+        //setTimeout(addProgress,first,50);
+        //setTimeout(modalError,second);
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
             //loadLogin(p.description);
-            setTimeout(addProgress,first,50);
-            setTimeout(modalTokenError,second,p.description);
+            //setTimeout(addProgress,first,50);
+            //setTimeout(modalTokenError,second,p.description);
             return;
         } else{
             //document.getElementById('task5').innerHTML = "";
+            document.getElementById('homeName').value = str;
             changeOptions(select,obj.name,obj._id);
-            setTimeout(addProgress,first,50);
-            setTimeout(successModal,second,"Name changed!");
+            //setTimeout(disableOnHouse,10);
+            setTimeout(addSpinerGlif,10,button,"Change...");
+            setTimeout(addCheckGlif,400,button,"Success!");
+            setTimeout(removeGlif,1000,button,"Change");
+            //setTimeout(unDisableOnHouse,600);
+            //setTimeout(addProgress,first,50);
+            //setTimeout(successModal,second,"Name changed!");
             //loadTask();
         }
     });
 }
 
 function deleteHouse() {
-    openModalWindow("Delete house...");
+    //openModalWindow("Delete house...");
     var select = document.getElementById('task5');
     var id = getSelectOptionsValue(select);
     var obj = {
         accessToken: localStorage.getItem('accessToken'),
         _id:id
     };
-
+    var button = document.getElementById('delHome');
     VT.send('POST', '/deleteHouse', obj, function (e) {
         console.log(e);
-        setTimeout(addProgress,first,50);
-        setTimeout(modalError,second,e);
+        //setTimeout(addProgress,first,50);
+        //setTimeout(modalError,second,e);
+        setTimeout(addSpinerGlif,10,button,"Deletion...");
+        setTimeout(addTimesGlif,400,button,"Error");
+        setTimeout(removeGlif,1000,button,"Delete");
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            //loadLogin(p.description);
-            setTimeout(addProgress,first,50);
-            setTimeout(modalTokenError,second,p.description);
+            loadLogin(p.description);
+;
             return;
         } else{
             console.log(p);
             deleteOption(select,obj._id);
+            setTimeout(disableOnHouse,10);
+            setTimeout(addSpinerGlif,10,button,"Deletion...");
+            setTimeout(addCheckGlif,400,button,"Success!");
+            setTimeout(removeGlif,1000,button,"Delete");
+
             if(select.length == 0){
                 resetRoom();
-                addDisabledHome();
                 document.getElementById('homeName').value ="";
             } else {
-                task5_2();
+                setTimeout(unDisableOnHouse,600);
+                setTimeout(task5_2,600);
+                //task5_2();
             }
-            setTimeout(addProgress,first,50);
-            setTimeout(successModal,second,"House deleted!");
-            //loadTask();
+            //setTimeout(addProgress,first,50);
+
         }
     });
 }
@@ -301,7 +331,9 @@ function newRoom() {
         VT.addClass('#newRoom','error-room');
         return;
     }
-    openModalWindow("Information about the room is loaded");
+
+    str = str.trim();
+    //openModalWindow("Information about the room is loaded");
     VT.removeClass('#newRoom','error-room');
 
     var object = {
@@ -310,17 +342,17 @@ function newRoom() {
         home:home
     };
 
-
+    var button = document.getElementById('addRoom');
     VT.send('POST', '/addRoom', object, function (e) {
         console.log(e);
-        setTimeout(addProgress,first,50);
-        setTimeout(modalError,second,50);
+        setTimeout(addSpinerGlif,10,button,"Add...");
+        setTimeout(addTimesGlif,400,button,"Error");
+        setTimeout(removeGlif,1000,button,"Add");
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            setTimeout(addProgress,first,50);
-            setTimeout(modalTokenError,second, p.description);
+            loadLogin(p.description)
             return;
         } else{
             //console.log(p);
@@ -329,13 +361,17 @@ function newRoom() {
             //loadTask();
             removeDisabledRoom();
             onRoomChange();
-            setTimeout(addProgress,first,50);
-            setTimeout(successModal,second,"Room added!");
+            setTimeout(addSpinerGlif,10,button,"Add...");
+            setTimeout(addCheckGlif,400,button,"Success!");
+            setTimeout(removeGlif,1000,button,"Add");
+            //setTimeout(addProgress,first,50);
+            //setTimeout(successModal,second,"Room added!");
         }
     });
 }
 
 function deleteRoom() {
+
     var select = document.getElementById('task5');
     var home = getSelectOptionsValue(select);
     select = document.getElementById('rooms');
@@ -346,27 +382,32 @@ function deleteRoom() {
         _id: _id,
         home: home
     };
-    //console.log(object);
 
-    openModalWindow("Delete room...");
+    var button = document.getElementById('delRoom');
+
     VT.send('POST', '/deleteRoom', obj, function (e) {
         console.log(e);
-        setTimeout(addProgress,first,50);
-        setTimeout(modalError,second,50);
+
+        setTimeout(addSpinerGlif,10,button,"Delete...");
+        setTimeout(addTimesGlif,400,button,"Error");
+        setTimeout(removeGlif,1000,button,"Delete");
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            setTimeout(addProgress,first,50);
-            setTimeout(modalTokenError,second, p.description);
+          //  setTimeout(addProgress,first,50);
+            //setTimeout(modalTokenError,second, p.description);
+            loadLogin(p.description);
             return;
         } else{
             //roomSelector();
             deleteOption(select,obj._id);
             if(select.length == 0){addDisabledRoom();}
             onRoomChange();
-            setTimeout(addProgress,first,50);
-            setTimeout(successModal,second,"Room deleted!");
+
+            setTimeout(addSpinerGlif,10,button,"Delete...");
+            setTimeout(addCheckGlif,400,button,"Success!");
+            setTimeout(removeGlif,1000,button,"Delete");
         }
     });
 
@@ -384,33 +425,33 @@ function changeRoomName(){
         VT.addClass('#roomName','error-room');
         return;
     }
-    openModalWindow("Change room name");
-    VT.removeClass('#roomName','error-room');
 
+    VT.removeClass('#roomName','error-room');
+    str = str.trim();
     var obj = {
         accessToken: localStorage.getItem('accessToken'),
         name: str,
         home: home,
         _id: _id
     };
-
+    var button = document.getElementById('upRoom');
     VT.send('POST', '/changeNameRoom', obj, function (e) {
         console.log(e);
-        setTimeout(addProgress,first,50);
-        setTimeout(modalError,second,50);
+
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            setTimeout(addProgress,first,50);
-            setTimeout(modalTokenError,second, p.description);
+            loadLogin(p.description);
             return;
         } else{
             document.getElementById('roomName').innerHTML = "";
             changeOptions(select,obj.name,obj._id);
+            document.getElementById('roomName').value = str;
             //roomSelector();
-            setTimeout(addProgress,first,50);
-            setTimeout(successModal,second,"Name changed!");
+            setTimeout(addSpinerGlif,10,button,"Change...");
+            setTimeout(addCheckGlif,400,button,"Success!");
+            setTimeout(removeGlif,1000,button,"Change");
         }
     });
 }
@@ -488,4 +529,30 @@ function removeDisabledRoom() {
 function resetRoom(){
     document.getElementById('rooms').innerHTML="";
     document.getElementById('roomName').value="";
+}
+
+function disableOnHouse(){
+    VT.setParam('#task5','disabled','disabled');
+    VT.setParam('#delHome','disabled','disabled');
+    VT.setParam('#homeName','disabled','disabled');
+    VT.setParam('#upHome','disabled','disabled');
+    VT.setParam('#rooms','disabled','disabled');
+    VT.setParam('#roomName','disabled','disabled');
+    VT.setParam('#upRoom','disabled','disabled');
+    VT.setParam('#newRoom','disabled','disabled');
+    VT.setParam('#addRoom','disabled','disabled');
+    VT.setParam('#delRoom','disabled','disabled')
+}
+
+function unDisableOnHouse() {
+    VT.removeParam('#task5','disabled');
+    VT.removeParam('#delHome','disabled');
+    VT.removeParam('#homeName','disabled');
+    VT.removeParam('#upHome','disabled');
+    VT.removeParam('#rooms','disabled');
+    VT.removeParam('#roomName','disabled');
+    VT.removeParam('#upRoom','disabled');
+    VT.removeParam('#newRoom','disabled');
+    VT.removeParam('#addRoom','disabled');
+    VT.removeParam('#delRoom','disabled','disabled')
 }

@@ -44,8 +44,19 @@ function validateRegistration(){
     parrent = parrent = /[a-zA-Zа-яА-Я]{3,25}/;
     if((!parrent.test(str)) & (str != "")) VT.addClass('.help-name','error');
 
-    if((document.getElementById('inputPassword').value != document.getElementById('confirmPassword').value) ||
-        (document.getElementById('inputPassword').value.length < 5)) VT.addClass('.help-password','error');
+    var flag = false;
+
+    if(document.getElementById('inputPassword').value != document.getElementById('confirmPassword').value){
+        document.querySelector('.help-password').innerHTML = "Passwords do not match";
+        VT.addClass('.help-password','error');
+        flag = true;
+    };
+
+    if(flag == false && document.getElementById('inputPassword').value.length < 5) {
+        document.querySelector('.help-password').innerHTML = "Short password!";
+        VT.addClass('.help-password','error');
+    }
+
 
     if(document.getElementById('age').value != "") {
         var age = document.getElementById('age').value;

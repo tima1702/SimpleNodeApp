@@ -38,26 +38,28 @@ function changeAll(){
     var obj = getInfoObj();
 
     if(!validInfo(obj)) return false;
-    openModalWindow("Change user information!");
+    var button = document.getElementById('changeAll');
+
     VT.send('POST','/updateUserInfo',obj, function (e) {
         console.log(e);
         setUserData();
-        setTimeout(addProgress,first,50);
-        setTimeout(errModal,second);
+        setTimeout(addSpinerGlif,10,button,"Change...");
+        setTimeout(addTimesGlif,400,button,"Error");
+        setTimeout(removeGlif,1000,button,"Change");
+
     },function (p) {
         console.log(p);
         if(p.numer == "-1"){
             localStorage.clear();
-            setTimeout(addProgress,first,50);
-            setTimeout(modalTokenError,second, p.description);
+            loadLogin(p.description);
             return;
         }else{
             updateSession(obj);
             setUserData();
-            setTimeout(addProgress,first,50);
-            setTimeout(successModal,second,"Information changed");
+            setTimeout(addSpinerGlif,10,button,"Change...");
+            setTimeout(addCheckGlif,400,button,"Success!");
+            setTimeout(removeGlif,1000,button,"Change");
         }
-        //alert("Данные обновлены");
     });
 }
 
@@ -76,12 +78,24 @@ function setUserData(){
 function changePassword(){
     VT.removeClass('.help-password','error');
 
-    if((document.getElementById('inputPassword').value != document.getElementById('confirmPassword').value) ||
-        (document.getElementById('inputPassword').value.length < 5)) {
-        VT.addClass('.help-password', 'error');
+    if(document.getElementById('inputPassword').value != document.getElementById('confirmPassword').value){
+        document.querySelector('.help-password').innerHTML = "Passwords do not match";
+        VT.addClass('.help-password','error');
+        return false;
+    };
+
+    if(document.getElementById('inputPassword').value.length < 5) {
+        document.querySelector('.help-password').innerHTML = "Short password!";
+        VT.addClass('.help-password','error');
         return false;
     }
-    openModalWindow("Change user password!");
+
+    if(document.getElementById('age').value != "") {
+        var age = document.getElementById('age').value;
+        age = Number(age);
+        if (age < 1 || age > 120) VT.addClass('.help-age', 'error');
+    }
+
     var password = document.getElementById('inputPassword').value;
     password = password.hashCode();
 
@@ -89,27 +103,28 @@ function changePassword(){
         accessToken: localStorage.getItem('accessToken'),
         password: password
     };
-
+    var button = document.getElementById('changePass');
     VT.send('POST','/updatePassword',obj,function (e) {
         console.log(e);
-        setTimeout(addProgress,first,50);
-        setTimeout(errModal,second);
+        setTimeout(addSpinerGlif,10,button,"Change...");
+        setTimeout(addTimesGlif,400,button,"Error");
+        setTimeout(removeGlif,1000,button,"Change");
     },function (p) {
         if(p.numer == "-1"){
             localStorage.clear();
-            setTimeout(addProgress,first,50);
-            setTimeout(modalTokenError,second, p.description);
+            loadLogin(p.description);
             return;
         }
         if(p != true){
-            setTimeout(addProgress,first,50);
-            setTimeout(errModal,second)
+            setTimeout(addSpinerGlif,10,button,"Change...");
+            setTimeout(addTimesGlif,400,button,"Error");
+            setTimeout(removeGlif,1000,button,"Change");
             return;
         };
-
+        setTimeout(addSpinerGlif,10,button,"Change...");
+        setTimeout(addCheckGlif,400,button,"Success!");
+        setTimeout(removeGlif,1000,button,"Change");
         document.getElementById('inputPassword').value = "";
         document.getElementById('confirmPassword').value ="";
-        setTimeout(addProgress,first,50);
-        setTimeout(successModal,second,"Password changed!");
     });
 }

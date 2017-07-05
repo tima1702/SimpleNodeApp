@@ -28,7 +28,7 @@ function loadLogin(helpMessage){
         loadUserInfo();
         return;
     }
-
+    window.location = "#login";
     navigation("#nav-log");
     var content = document.getElementById('content');
     content.innerHTML = "";
@@ -52,7 +52,7 @@ function loadRegistration(){
         loadUserInfo();
         return;
     }
-
+    window.location = "#registration";
     navigation("#nav-reg");
     var content = document.getElementById('content');
     content.innerHTML = "";
@@ -74,6 +74,7 @@ function loadTask() {
 
 function loadUserInfo(){
 
+
     if(!localStorage.getItem('accessToken')){
         loadLogin();
         return;
@@ -82,6 +83,7 @@ function loadUserInfo(){
         accessToken: localStorage.getItem('accessToken')
     };
 
+    window.location = "#user";
     navigation("#nav-inf");
     var content = document.getElementById('content');
     content.innerHTML = "";
@@ -92,7 +94,7 @@ function loadUserInfo(){
     },function (p) {
         if(!p.numer) {
             content.innerHTML += p;
-            window.setTimeout(setUserData,100);
+            window.setTimeout(setUserData,10);
         }
         else {
             localStorage.clear();
@@ -118,7 +120,7 @@ function loadAdministration(){
 
 
     navigation("#nav-adm");
-
+    window.location = "#adinistration";
     var content = document.getElementById('content');
     content.innerHTML = "";
 
@@ -129,7 +131,7 @@ function loadAdministration(){
     },function (p) {
         if(!p.numer) {
             content.innerHTML += p;
-            window.setTimeout(getUsers,100);
+            window.setTimeout(getUsers,10);
         }
         else {
             localStorage.clear();
@@ -165,145 +167,28 @@ function navigation(query){
     }
 }
 
-function addProgress(num){
-    var progressBar = document.getElementById('progress-bar');
-
-    var procent = getProgress();
-
-
-    //if(procent == 100) return 100;
-
-    if(procent > num && num != 0) return procent;
-
-
-    procent = num;
-
-    var str = "" + procent + "%";
-
-    progressBar.style.width = str;
-    return procent;
+function addSpinerGlif(button,str){
+    button.innerHTML = "";
+    button.innerHTML = '<i class="fa fa-spinner fa-spin" aria-hidden="true"></i><span>  ' + str + '</span>';
+    //VT.addEl(button,html);
 }
 
-
-
-
-function addingProgress(){
-    setTimeout(addProgress,100);
+function addCheckGlif(button,str){
+    button.innerHTML = "";
+    button.innerHTML = '<i class="fa fa-check" aria-hidden="true"></i><span>  ' + str + '</span>';
+    //VT.addEl(button,html);
 }
 
-
-function getProgress(){
-    var progressBar = document.getElementById('progress-bar');
-    var procent = progressBar.style.width;
-    procent = procent.slice(0, -1);
-    procent = Number(procent);
-    return procent;
+function addTimesGlif(button,str) {
+    button.innerHTML = "";
+    button.innerHTML = '<i class="fa fa-times" aria-hidden="true"></i><span>  ' + str + '</span>';
+    //VT.addEl(button,html);
 }
 
-function closeModalWindow(){
-    VT.addClass("#popup1",'hide');
-    var progressBar = document.getElementById('progress-bar');
-    var procent = getProgress();
-
-    procent = 0;
-
-    var str = "" + procent + "%";
-    progressBar.style.width = str;
-
-    addDescriptonHimt("");
-    hideModalButton();
-    VT.removeClass('#progress-bar','progress-bar-danger');
-}
-
-function openModalWindow(text) {
-    text = text || "Loading information";
-    VT.removeClass("#popup1",'hide');
-    addDescriptionModal(text);
-}
-
-function hideModalButton() {
-    VT.addClass("#mod-btn",'hide');
-}
-function showModalButton(){
-    VT.removeClass("#mod-btn",'hide');
-}
-
-function exampleModal(){
-    openModalWindow();
-    setTimeout(addProgress,3000,30);
-    setTimeout(addProgress,6000,60);
-    setTimeout(addProgress,9000,90);
-    setTimeout(addProgress,10000,100);
-    setTimeout(showModalButton,11000);
-    setTimeout(addDescriptonHimt,11000,"In hac habitasse platea dictumst.");
-}
-
-function exampleError(){
-    openModalWindow();
-    setTimeout(addProgress,3000,30);
-    setTimeout(addProgress,6000,60);
-    setTimeout(errModal,7000);
-    setTimeout(showModalButton,7000);
-    setTimeout(addDescriptonHimt,7000,"Error");
-}
-
-function successModal(text){
-    text = text || "Success!";
-    addProgress(100);
-    setTimeout(addDescriptonHimt,350,text);
-    setTimeout(showModalButton,350);
-}
-
-function modalTokenError(text){
-    text = text || "Token error!";
-    setTimeout(addDescriptonHimt,250,text);
-    setTimeout(errModal,250);
-    setTimeout(closeModalWindow,2000);
-    setTimeout(loadLogin, 2000,text);
-}
-
-function modalError(text){
-    text = text || "Error!";
-    errModal();
-    addDescriptonHimt(text);
-}
-
-
-function errModal(){
-    VT.addClass('#progress-bar','progress-bar-danger');
-}
-function exampleErrorToken() {
-    openModalWindow();
-    setTimeout(addProgress,3000,30);
-    setTimeout(addProgress,6000,60);
-    setTimeout(errModal,7000);
-    //setTimeout(showModalButton,7000);
-    setTimeout(addDescriptonHimt,7000,"Error token");
-    setTimeout(closeModalWindow,8000);
-    setTimeout(loadLogin, 8000,"Error token");
-    //console.log("123");
-    //loadLogin();
-}
-
-function addDescriptonHimt(text){
-    document.getElementById('himt').innerText = text;
-
-}
-
-function addDescriptionModal(text){
-    document.getElementById('desc').innerText = text;
-}
-
-function loadProgress(num){
-    if(num < getProgress()) return false;
-
-    for(var i = 0; i < getProgress(); i++) addingProgress();
-
-    //return true;
-}
-
-function closeProgress(){
-
+function removeGlif(button, str){
+    button.innerHTML = "";
+    button.innerHTML = '<span>' + str + '</span>';
+    //VT.addEl(button,html);
 }
 
 function logOut() {
@@ -312,8 +197,15 @@ function logOut() {
 }
 
 if(localStorage.getItem('accessToken')){
-    loadUserInfo();
+    var x = location.hash;
+    var flag = true;
+    if(x == "#user") {loadUserInfo(); flag = false}
+    if(x == "#home") {loadHomes(); flag = false}
+    if(x == "#adinistration") {loadAdministration();flag = false}
+    if(flag) loadUserInfo();
 } else{
-    loadLogin();
+    var x = location.hash;
+    if(x == "#registration") loadRegistration();
+    else loadLogin();
 }
 
