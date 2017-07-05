@@ -1,11 +1,14 @@
+var first = 100;
+var second = 750;
 function addHome() {
+
     var str = document.getElementById('newHome').value;
 
     if(validNewHome() == false){
         VT.addClass('#newHome','error-room');
         return;
     }
-
+    openModalWindow("Information about the house is loaded");
     VT.removeClass('#newHome','error-room');
 
     var obj = {
@@ -13,20 +16,25 @@ function addHome() {
         name: str
     };
 
-
     VT.send('POST', '/addNewHouse', obj, function (e) {
         console.log(e);
+        setTimeout(addProgress,first,50);
+        setTimeout(errModal,second);
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            loadLogin(p.description);
+            setTimeout(addProgress,first,50);
+            setTimeout(modalTokenError,second, p.description);
+            //loadLogin(p.description);
             return;
         } else{
+            setTimeout(addProgress,first,50);
             console.log(p);
             document.getElementById('newHome').value = "";
             task3(p.name, "#task5",p._id);
             //loadTask();
+            setTimeout(successModal,second,"House added");
             removeDisabledHome();
             addDisabledRoom();
             task5_2();
@@ -34,8 +42,9 @@ function addHome() {
     });
 }
 
-function loadHomes(){
 
+
+function loadHomes(){
     if(!localStorage.getItem('accessToken')){
         loadLogin();
         return;
@@ -69,18 +78,22 @@ function loadHomes(){
 }
 
 function getAllHouse() {
+    openModalWindow("Loading houses and rooms information");
     document.getElementById('task5').innerHTML = "";
     var obj = {
         accessToken: localStorage.getItem('accessToken')
     };
-
     VT.send('POST', '/getAllHouse', obj, function (e) {
         console.log(e);
+        setTimeout(addProgress,first,50);
+        setTimeout(modalError,second,50);
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            loadLogin(p.description);
+            setTimeout(addProgress,first,50);
+            setTimeout(modalTokenError,second,p.description);
+            //loadLogin(p.description);
             return;
         } else{
             for(var i = 0; i < p.length; i++){
@@ -88,6 +101,8 @@ function getAllHouse() {
             }
             if(p.length == 0) addDisabledHome();
             else removeDisabledHome();
+            setTimeout(addProgress,first,50);
+            setTimeout(successModal,second,"Information uploaded");
         }
     });
 }
@@ -113,7 +128,7 @@ function changeHouseName(){
     }
 
     VT.removeClass('#homeName','error-room');
-
+    openModalWindow("Change name...");
     var obj = {
         accessToken: localStorage.getItem('accessToken'),
         _id:id,
@@ -122,21 +137,28 @@ function changeHouseName(){
 
     VT.send('POST', '/changeHomeName', obj, function (e) {
         console.log(e);
+        setTimeout(addProgress,first,50);
+        setTimeout(modalError,second);
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            loadLogin(p.description);
+            //loadLogin(p.description);
+            setTimeout(addProgress,first,50);
+            setTimeout(modalTokenError,second,p.description);
             return;
         } else{
             //document.getElementById('task5').innerHTML = "";
             changeOptions(select,obj.name,obj._id);
+            setTimeout(addProgress,first,50);
+            setTimeout(successModal,second,"Name changed!");
             //loadTask();
         }
     });
 }
 
 function deleteHouse() {
+    openModalWindow("Delete house...");
     var select = document.getElementById('task5');
     var id = getSelectOptionsValue(select);
     var obj = {
@@ -146,11 +168,15 @@ function deleteHouse() {
 
     VT.send('POST', '/deleteHouse', obj, function (e) {
         console.log(e);
+        setTimeout(addProgress,first,50);
+        setTimeout(modalError,second,e);
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            loadLogin(p.description);
+            //loadLogin(p.description);
+            setTimeout(addProgress,first,50);
+            setTimeout(modalTokenError,second,p.description);
             return;
         } else{
             console.log(p);
@@ -162,6 +188,8 @@ function deleteHouse() {
             } else {
                 task5_2();
             }
+            setTimeout(addProgress,first,50);
+            setTimeout(successModal,second,"House deleted!");
             //loadTask();
         }
     });
@@ -218,8 +246,12 @@ function deleteOption(select,_id) {
 
 
 function task3(str, query, value){
-    var option = '<option value="'+value +'">' + str +'</option>';
-    VT.addEl(query,option);
+    // var option = '<option value="'+value +'">' + str +'</option>';
+    var opt = document.createElement('option');
+    VT.setParam(opt,'value',value);
+    VT.updateEl(opt,str);
+    var sel = VT.getEl(query);
+    sel.appendChild(opt);
 }
 
 function getHomeNames() {
@@ -269,7 +301,7 @@ function newRoom() {
         VT.addClass('#newRoom','error-room');
         return;
     }
-
+    openModalWindow("Information about the room is loaded");
     VT.removeClass('#newRoom','error-room');
 
     var object = {
@@ -281,11 +313,14 @@ function newRoom() {
 
     VT.send('POST', '/addRoom', object, function (e) {
         console.log(e);
+        setTimeout(addProgress,first,50);
+        setTimeout(modalError,second,50);
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            loadLogin(p.description);
+            setTimeout(addProgress,first,50);
+            setTimeout(modalTokenError,second, p.description);
             return;
         } else{
             //console.log(p);
@@ -294,7 +329,8 @@ function newRoom() {
             //loadTask();
             removeDisabledRoom();
             onRoomChange();
-
+            setTimeout(addProgress,first,50);
+            setTimeout(successModal,second,"Room added!");
         }
     });
 }
@@ -312,20 +348,25 @@ function deleteRoom() {
     };
     //console.log(object);
 
-
+    openModalWindow("Delete room...");
     VT.send('POST', '/deleteRoom', obj, function (e) {
         console.log(e);
+        setTimeout(addProgress,first,50);
+        setTimeout(modalError,second,50);
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            loadLogin(p.description);
+            setTimeout(addProgress,first,50);
+            setTimeout(modalTokenError,second, p.description);
             return;
         } else{
             //roomSelector();
             deleteOption(select,obj._id);
             if(select.length == 0){addDisabledRoom();}
             onRoomChange();
+            setTimeout(addProgress,first,50);
+            setTimeout(successModal,second,"Room deleted!");
         }
     });
 
@@ -343,7 +384,7 @@ function changeRoomName(){
         VT.addClass('#roomName','error-room');
         return;
     }
-
+    openModalWindow("Change room name");
     VT.removeClass('#roomName','error-room');
 
     var obj = {
@@ -355,16 +396,21 @@ function changeRoomName(){
 
     VT.send('POST', '/changeNameRoom', obj, function (e) {
         console.log(e);
+        setTimeout(addProgress,first,50);
+        setTimeout(modalError,second,50);
     }, function (p) {
         if(p.numer == "-1") {
             console.log(p);
             localStorage.clear();
-            loadLogin(p.description);
+            setTimeout(addProgress,first,50);
+            setTimeout(modalTokenError,second, p.description);
             return;
         } else{
             document.getElementById('roomName').innerHTML = "";
             changeOptions(select,obj.name,obj._id);
             //roomSelector();
+            setTimeout(addProgress,first,50);
+            setTimeout(successModal,second,"Name changed!");
         }
     });
 }

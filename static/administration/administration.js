@@ -1,3 +1,6 @@
+var first = 100;
+var second = 750;
+
 function addTd(val){
     return "<td>" + val +"</td>";
 }
@@ -16,25 +19,30 @@ function addTr(val){
 }
 
 function getUsers(){
+    openModalWindow("Load user information!");
     document.getElementById('tabl').innerHTML ="";
     var obj = {
         accessToken: localStorage.getItem('accessToken')
     }
 
     VT.send('POST','/getAllUser',obj,function (e) {
-        console.log(e);
+        setTimeout(addProgress,first,50);
+        setTimeout(errModal,second);
     },function (p) {
 
         if(p.numer == '-1') {
             localStorage.clear();
-            loadLogin();
+            setTimeout(addProgress,first,50);
+            setTimeout(modalTokenError,second, p.description);
             return;
-        }
-        {
+        } else {
             for(var i = 0; i < p.length; i++) {
             p[i].button = "<button onclick=\"deliteUser('" + p[i]._id + "','" + p[i].login +"')\">Delete</button>";
             addTr(p[i])
-        };}
+        };
+            setTimeout(addProgress,first,50);
+            setTimeout(successModal,second,"Information loaded");
+        }
     });
 }
 
@@ -51,19 +59,23 @@ function deliteUser(id,login) {
         accessToken: localStorage.getItem('accessToken'),
         deleteLogin: id
     };
-
+    openModalWindow("Delete " + login);
     VT.send('POST','/deleteUser',obj,function (e) {
+        setTimeout(addProgress,first,50);
+        setTimeout(errModal,second);
         console.log(e);
     },function (p) {
         //console.log(p);
         if(p.numer == "-1" || p.numer == "2") {
             //console.log(p.description);
-            localStorage.clear();
-            loadLogin(p.description);
+            setTimeout(addProgress,first,50);
+            setTimeout(modalTokenError,second, p.description);
             return;
         }else {
             console.log(p);
             deleteTr(login);
+            setTimeout(addProgress,first,50);
+            setTimeout(successModal,second, p.description);
         }
     });
 }

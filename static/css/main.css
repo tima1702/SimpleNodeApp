@@ -123,3 +123,12 @@ p{
 .title-popup{
     font-size: 30px;
 }
+
+.modal-button{
+    bottom: 0;
+    float: none !important;
+
+}
+.description-popup{
+    font-size: 20px;
+}

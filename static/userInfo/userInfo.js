@@ -38,17 +38,24 @@ function changeAll(){
     var obj = getInfoObj();
 
     if(!validInfo(obj)) return false;
-
+    openModalWindow("Change user information!");
     VT.send('POST','/updateUserInfo',obj, function (e) {
         console.log(e);
+        setUserData();
+        setTimeout(addProgress,first,50);
+        setTimeout(errModal,second);
     },function (p) {
         console.log(p);
         if(p.numer == "-1"){
             localStorage.clear();
-            return loadLogin(p.description);
+            setTimeout(addProgress,first,50);
+            setTimeout(modalTokenError,second, p.description);
+            return;
         }else{
             updateSession(obj);
             setUserData();
+            setTimeout(addProgress,first,50);
+            setTimeout(successModal,second,"Information changed");
         }
         //alert("Данные обновлены");
     });
@@ -74,7 +81,7 @@ function changePassword(){
         VT.addClass('.help-password', 'error');
         return false;
     }
-
+    openModalWindow("Change user password!");
     var password = document.getElementById('inputPassword').value;
     password = password.hashCode();
 
@@ -85,18 +92,24 @@ function changePassword(){
 
     VT.send('POST','/updatePassword',obj,function (e) {
         console.log(e);
+        setTimeout(addProgress,first,50);
+        setTimeout(errModal,second);
     },function (p) {
         if(p.numer == "-1"){
             localStorage.clear();
-            return loadLogin(p.descriptoin);
+            setTimeout(addProgress,first,50);
+            setTimeout(modalTokenError,second, p.description);
+            return;
         }
         if(p != true){
-            alert("Ошибка");
+            setTimeout(addProgress,first,50);
+            setTimeout(errModal,second)
             return;
         };
 
         document.getElementById('inputPassword').value = "";
         document.getElementById('confirmPassword').value ="";
-        alert("Пароль изменнен");
+        setTimeout(addProgress,first,50);
+        setTimeout(successModal,second,"Password changed!");
     });
 }

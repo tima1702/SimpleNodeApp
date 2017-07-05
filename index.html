@@ -21,14 +21,18 @@
 </div>
     <div id="content"></div>
 </div>
-<div class="b-popup" id="popup1">
+<div class="b-popup hide" id="popup1">
     <div class="b-popup-content center">
-        <div class="row title-popup">Title</div>
+        <div class="row title-popup">Loading</div>
+        <div class="description-popup" id="desc"></div>
         <div class="progress">
             <div class="progress-bar" role="progressbar" id="progress-bar" aria-valuenow="40"
                  aria-valuemin="10" aria-valuemax="100" style="width:0%">
             </div>
         </div>
+        <div class="description-popup" id="himt"></div>
+        <br>
+        <button class="modal-button btn btn-default col-md-3 hide" id="mod-btn" onclick="closeModalWindow()">Close</button>
     </div>
 </div>
 <script src="static/js/vanilla_tools.js"></script>

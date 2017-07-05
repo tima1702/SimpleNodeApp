@@ -11,7 +11,8 @@ var homeShema = new Schema({
 homeShema.post('remove', function (doc) {
     console.log("Комнаты", doc);
     Room.remove({"home": doc._id}, function (err,room) {
-        if (err) return;
+        if (err)
+            console.log('[Error] Remove room:',err);
     });
 });
 

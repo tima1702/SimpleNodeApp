@@ -165,20 +165,32 @@ function navigation(query){
     }
 }
 
-function addProgress(){
+function addProgress(num){
     var progressBar = document.getElementById('progress-bar');
 
     var procent = getProgress();
 
 
-    if(procent == 100) return 100;
-    procent += 5;
+    //if(procent == 100) return 100;
+
+    if(procent > num && num != 0) return procent;
+
+
+    procent = num;
 
     var str = "" + procent + "%";
 
     progressBar.style.width = str;
     return procent;
 }
+
+
+
+
+function addingProgress(){
+    setTimeout(addProgress,100);
+}
+
 
 function getProgress(){
     var progressBar = document.getElementById('progress-bar');
@@ -188,14 +200,106 @@ function getProgress(){
     return procent;
 }
 
+function closeModalWindow(){
+    VT.addClass("#popup1",'hide');
+    var progressBar = document.getElementById('progress-bar');
+    var procent = getProgress();
 
+    procent = 0;
+
+    var str = "" + procent + "%";
+    progressBar.style.width = str;
+
+    addDescriptonHimt("");
+    hideModalButton();
+    VT.removeClass('#progress-bar','progress-bar-danger');
+}
+
+function openModalWindow(text) {
+    text = text || "Loading information";
+    VT.removeClass("#popup1",'hide');
+    addDescriptionModal(text);
+}
+
+function hideModalButton() {
+    VT.addClass("#mod-btn",'hide');
+}
+function showModalButton(){
+    VT.removeClass("#mod-btn",'hide');
+}
+
+function exampleModal(){
+    openModalWindow();
+    setTimeout(addProgress,3000,30);
+    setTimeout(addProgress,6000,60);
+    setTimeout(addProgress,9000,90);
+    setTimeout(addProgress,10000,100);
+    setTimeout(showModalButton,11000);
+    setTimeout(addDescriptonHimt,11000,"In hac habitasse platea dictumst.");
+}
+
+function exampleError(){
+    openModalWindow();
+    setTimeout(addProgress,3000,30);
+    setTimeout(addProgress,6000,60);
+    setTimeout(errModal,7000);
+    setTimeout(showModalButton,7000);
+    setTimeout(addDescriptonHimt,7000,"Error");
+}
+
+function successModal(text){
+    text = text || "Success!";
+    addProgress(100);
+    setTimeout(addDescriptonHimt,350,text);
+    setTimeout(showModalButton,350);
+}
+
+function modalTokenError(text){
+    text = text || "Token error!";
+    setTimeout(addDescriptonHimt,250,text);
+    setTimeout(errModal,250);
+    setTimeout(closeModalWindow,2000);
+    setTimeout(loadLogin, 2000,text);
+}
+
+function modalError(text){
+    text = text || "Error!";
+    errModal();
+    addDescriptonHimt(text);
+}
+
+
+function errModal(){
+    VT.addClass('#progress-bar','progress-bar-danger');
+}
+function exampleErrorToken() {
+    openModalWindow();
+    setTimeout(addProgress,3000,30);
+    setTimeout(addProgress,6000,60);
+    setTimeout(errModal,7000);
+    //setTimeout(showModalButton,7000);
+    setTimeout(addDescriptonHimt,7000,"Error token");
+    setTimeout(closeModalWindow,8000);
+    setTimeout(loadLogin, 8000,"Error token");
+    //console.log("123");
+    //loadLogin();
+}
+
+function addDescriptonHimt(text){
+    document.getElementById('himt').innerText = text;
+
+}
+
+function addDescriptionModal(text){
+    document.getElementById('desc').innerText = text;
+}
 
 function loadProgress(num){
     if(num < getProgress()) return false;
-    while(num > getProgress()){
-        window.setTimeout(addProgress,1);
-    }
-    return true;
+
+    for(var i = 0; i < getProgress(); i++) addingProgress();
+
+    //return true;
 }
 
 function closeProgress(){

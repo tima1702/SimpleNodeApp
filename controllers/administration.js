@@ -42,11 +42,11 @@ function deleteUser(request,reponse){
         });
         if(json.deleteLogin == request._id) return reponse.send({
             numer:"2",
-            description: "User deleted!"
+            description: "You have deleted your data"
         });
         return reponse.send({
             numer:"1",
-            description: " "
+            description: "User deleted!"
         });
     });
 }
